@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Medical Biology - Ultimate Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700;800&family=Cairo:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0f172a; --secondary: #dc2626; --accent: #0891b2;
+            --success: #059669; --warning: #ea580c; --purple: #7c3aed;
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e293b 100%);
+            line-height: 1.7; 
+            color: #1f2937;
+            position: relative;
+        }
+        
+        /* Canvas للرسم */
+        #drawingCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+            cursor: crosshair;
+        }
+
+        #drawingCanvas.active {
+            pointer-events: all;
+        }
+        
+        .container { 
+            max-width: 1500px; 
+            margin: 0 auto; 
+            background: #fff; 
+            box-shadow: 0 25px 100px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 1;
+        }
+        
+        header { 
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0891b2 100%);
+            color: white; 
+            padding: 90px 50px; 
+            text-align: center; 
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 0.3; }
+        }
+        
+        h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 4.5em; 
+            font-weight: 900;
+            margin-bottom: 20px; 
+            position: relative; 
+            z-index: 1;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+        
+        header p {
+            font-size: 1.4em;
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+        
+        nav { 
+            background: var(--primary);
+            padding: 20px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        nav a { 
+            color: white; 
+            text-decoration: none; 
+            padding: 14px 28px; 
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            display: inline-block; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 700;
+            border: 2px solid transparent;
+            font-size: 0.95em;
+        }
+        
+        nav a:hover { 
+            background: var(--secondary);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(220,38,38,0.5);
+        }
+        
+        #backToTop {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(220,38,38,0.4);
+            display: none;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        
+        #backToTop:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 12px 40px rgba(220,38,38,0.6);
+        }
+        
+        #backToTop.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .main-section {
+            padding: 80px 60px;
+        }
+        
+        .main-section:nth-child(odd) {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            padding-bottom: 25px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 3px;
+        }
+        
+        .chapter {
+            padding: 70px 60px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            background: white;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.08);
+        }
+        
+        h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 3em; 
+            color: var(--primary);
+            margin-bottom: 50px;
+            border-left: 8px solid var(--secondary);
+            padding-left: 30px;
+        }
+        
+        h3 { 
+            font-size: 2em; 
+            color: var(--primary);
+            margin: 40px 0 25px;
+            font-weight: 800;
+        }
+        
+        h4 {
+            font-size: 1.5em;
+            color: var(--accent);
+            margin: 25px 0 15px;
+            font-weight: 700;
+        }
+        
+        .box { 
+            background: #f8fafc;
+            padding: 40px; 
+            margin: 35px 0; 
+            border-radius: 16px;
+            border-left: 6px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+        
+        .box:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+        
+        .arabic { 
+            font-family: 'Cairo', sans-serif; 
+            direction: rtl;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-right: 4px solid var(--warning);
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        .rect-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px; 
+            margin: 35px 0;
+        }
+        
+        .rect-card { 
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            padding: 30px;
+            border-radius: 16px;
+            border-left: 6px solid var(--accent);
+            box-shadow: 0 6px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .rect-card:hover { 
+            transform: translateX(12px) translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            border-left-color: var(--secondary);
+        }
+        
+        .rect-card .icon { 
+            font-size: 3em;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .rect-card h4 { 
+            color: var(--primary);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .rect-card p { 
+            color: #475569;
+            line-height: 1.6;
+            margin: 5px 0;
+        }
+        
+        .rect-card .ar { 
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            color: var(--warning);
+            font-weight: 700;
+            font-size: 0.95em;
+            margin-top: 8px;
+        }
+        
+        table { 
+            width: 100%;
+            border-collapse: collapse;
+            margin: 35px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 35px rgba(0,0,0,0.1);
+        }
+        
+        thead { 
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+        }
+        
+        th { 
+            padding: 20px;
+            font-weight: 800;
+            font-size: 1.05em;
+            text-align: left;
+        }
+        
+        td { 
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        tr:nth-child(even) { background: #f9fafb; }
+        tr:hover { background: rgba(8,145,178,0.05); }
+        
+        .highlight { 
+            color: var(--secondary);
+            font-weight: 700;
+            background: #fee2e2;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+        
+        .key-point { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 15px 10px;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 8px 30px rgba(102,126,234,0.4);
+        }
+        
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+        
+        li {
+            margin: 12px 0;
+            line-height: 1.8;
+        }
+        
+        li strong {
+            color: var(--primary);
+        }
+        
+        .important-box {
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+            border: 3px solid var(--secondary);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .important-box h4 {
+            color: var(--secondary);
+            margin-top: 0;
+        }
+        
+        /* Quiz Section */
+        .quiz-section {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 80px 60px;
+            color: white;
+        }
+        
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .quiz-chapter {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 50px;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .quiz-chapter h3 {
+            color: white;
+            font-size: 2.2em;
+            margin-bottom: 35px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 15px;
+        }
+        
+        .question {
+            background: rgba(255,255,255,0.08);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+        
+        .question:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        
+        .question-text {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+        }
+        
+        .options {
+            display: grid;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .option {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .option:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .option.correct {
+            background: #059669 !important;
+            border-color: #10b981 !important;
+            color: white !important;
+            animation: correctPulse 0.5s ease;
+        }
+        
+        .option.wrong {
+            background: #dc2626 !important;
+            border-color: #ef4444 !important;
+            color: white !important;
+            animation: wrongShake 0.5s ease;
+        }
+        
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .explanation {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border-left: 4px solid #fbbf24;
+            display: none;
+        }
+        
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.4s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .explanation h5 {
+            color: #fbbf24;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .explain-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        
+        .explain-btn.show {
+            display: inline-block;
+        }
+        
+        .explain-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(245,158,11,0.5);
+        }
+        
+        .quiz-controls {
+            text-align: center;
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .quiz-btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(5,150,105,0.4);
+        }
+        
+        .quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(5,150,105,0.6);
+        }
+        
+        .quiz-btn.reset {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 8px 25px rgba(220,38,38,0.4);
+        }
+        
+        .quiz-btn.reset:hover {
+            box-shadow: 0 12px 35px rgba(220,38,38,0.6);
+        }
+        
+        .score-display {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 40px;
+            display: none;
+            animation: scaleIn 0.5s ease;
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .score-display.show {
+            display: block;
+        }
+        
+        .score-display h3 {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .score-display p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        /* أدوات الرسم */
+        .drawing-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .draw-btn {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .draw-btn:hover { background: #475569; }
+        .draw-btn.active { background: #dc2626; }
+        
+        .color-picker-input {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .divider { width: 1px; background: #475569; margin: 0 5px; }
+        
+        /* Responsive */
+        @media (max-width: 768px) { 
+            h1 { font-size: 2.5em; }
+            .chapter, .main-section { padding: 40px 25px; }
+            .rect-grid { grid-template-columns: 1fr; }
+            nav a { display: block; margin: 5px 0; }
+            #backToTop { bottom: 140px; right: 20px; width: 50px; height: 50px; }
+            .drawing-controls { 
+                flex-wrap: wrap;
+                bottom: 10px;
+                width: 95%;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawingCanvas"></canvas>
+    
+    <div class="container">
+        <header>
+            <h1>🧬 ADVANCED MEDICAL BIOLOGY</h1>
+            <p>Ultimate Comprehensive Guide with Drawing Tools | Chapters 4, 5, 6, 7</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#content">📚 Content</a></li>
+                <li><a href="#ch4">Ch 4</a></li>
+                <li><a href="#ch5">Ch 5</a></li>
+                <li><a href="#ch6">Ch 6</a></li>
+                <li><a href="#ch7">Ch 7</a></li>
+                <li><a href="#quiz">🎯 Quiz</a></li>
+            </ul>
+        </nav>
+
+        <!-- CONTENT SECTION (keeping only 2 chapters as example) -->
+        <section class="main-section" id="content">
+            <h1 class="section-title">📖 Content Section</h1>
+            
+            <div class="chapter" id="ch4">
+                <h2>Chapter 4: Cell Membrane Structure & Transport</h2>
+                <div class="box">
+                    <h3>Plasma Membrane</h3>
+                    <p>The plasma membrane is the <span class="highlight">boundary separating</span> the cell interior from external environment.</p>
+                    <div class="arabic">الحد الفاصل بين داخل وخارج الخلية</div>
+                </div>
+            </div>
+
+            <div class="chapter" id="ch6">
+                <h2>Chapter 6: Genetics</h2>
+                <div class="box">
+                    <h3>Mendel's Laws</h3>
+                    <p>Foundation of inheritance patterns.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ SECTION -->
+        <section class="quiz-section" id="quiz">
+            <div class="quiz-container">
+                <h1 class="section-title" style="color:white;">🎯 Interactive Practice Quiz - 30 Questions</h1>
+                <p style="text-align:center;font-size:1.2em;margin-bottom:40px;opacity:0.9;">
+                    Click your answer - <span style="color:#10b981;font-weight:700;">GREEN</span> = Correct | <span style="color:#ef4444;font-weight:700;">RED</span> = Wrong
+                </p>
+
+                <!-- Chapter 4 Quiz - 8 questions -->
+                <div class="quiz-chapter">
+                    <h3>Chapter 4: Cell Membrane & Transport (8 Questions)</h3>
+                    
+                    <div class="question" data-answer="B" data-explanation="Cholesterol molecules embedded in the membrane provide structural support and help regulate membrane fluidity by preventing fatty acid chains from sticking together at cold temperatures and preventing excessive movement at high temperatures.">
+                        <div class="question-text">1. Which component provides structural support and regulates membrane fluidity?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Phospholipids</div>
+                            <div class="option" data-choice="B">B) Cholesterol</div>
+                            <div class="option" data-choice="C">C) Channel proteins</div>
+                            <div class="option" data-choice="D">D) Glycoproteins</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation">
+                            <h5>✅ Explanation:</h5>
+                            <p></p>
+                        </div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="The sodium-potassium pump is a critical active transport mechanism that moves 3 Na⁺ ions OUT of the cell and 2 K⁺ ions INTO the cell per ATP molecule consumed. This maintains essential concentration gradients for nerve and muscle function.">
+                        <div class="question-text">2. How many ions does the sodium-potassium pump move per cycle?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) 2 Na⁺ out, 3 K⁺ in</div>
+                            <div class="option" data-choice="B">B) 3 Na⁺ out, 2 K⁺ in</div>
+                            <div class="option" data-choice="C">C) 3 Na⁺ out, 3 K⁺ in</div>
+                            <div class="option" data-choice="D">D) 2 Na⁺ out, 2 K⁺ in</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="A hypotonic solution has LOWER solute concentration (more water) than the cell. Water moves INTO the cell by osmosis, causing it to swell. Remember: 'HYPO' means less/under - less solute, so water enters!">
+                        <div class="question-text">3. A cell placed in solution begins to swell. The solution is:</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Hypertonic</div>
+                            <div class="option" data-choice="B">B) Hypotonic</div>
+                            <div class="option" data-choice="C">C) Isotonic</div>
+                            <div class="option" data-choice="D">D) Amphipathic</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="Receptor-mediated endocytosis is the MOST SPECIFIC type because substances must bind to specific receptor proteins on the cell surface before the cell will engulf them. This allows cells to selectively take up large quantities of specific materials like LDL cholesterol.">
+                        <div class="question-text">4. Which endocytosis type is MOST specific?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Phagocytosis</div>
+                            <div class="option" data-choice="B">B) Pinocytosis</div>
+                            <div class="option" data-choice="C">C) Receptor-mediated endocytosis</div>
+                            <div class="option" data-choice="D">D) Exocytosis</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="Facilitated diffusion uses protein channels or carriers to help molecules cross the membrane. It's still passive (no ATP) and moves down the concentration gradient, but large polar molecules like glucose need these proteins because they can't pass through the lipid bilayer directly.">
+                        <div class="question-text">5. Facilitated diffusion differs from simple diffusion because it:</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Requires ATP energy</div>
+                            <div class="option" data-choice="B">B) Moves against concentration gradient</div>
+                            <div class="option" data-choice="C">C) Uses protein channels</div>
+                            <div class="option" data-choice="D">D) Only transports water</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="A" data-explanation="Phagocytosis means 'cellular eating' - the cell extends pseudopodia (false feet) to surround and engulf large solid particles like bacteria. This is how white blood cells destroy pathogens! It forms a large vacuole that fuses with lysosomes for digestion.">
+                        <div class="question-text">6. Which process do white blood cells use to engulf bacteria?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Phagocytosis</div>
+                            <div class="option" data-choice="B">B) Pinocytosis</div>
+                            <div class="option" data-choice="C">C) Osmosis</div>
+                            <div class="option" data-choice="D">D) Facilitated diffusion</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="D" data-explanation="Junction proteins connect adjacent cells and allow communication between them. Types include gap junctions (allow passage of small molecules), tight junctions (seal cells together), and desmosomes (provide strong anchoring). These are critical for tissue integrity and coordinated function.">
+                        <div class="question-text">7. Which protein function allows cells to communicate with each other?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Channel proteins</div>
+                            <div class="option" data-choice="B">B) Transport proteins</div>
+                            <div class="option" data-choice="C">C) Receptor proteins</div>
+                            <div class="option" data-choice="D">D) Junction proteins</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="A" data-explanation="Active transport requires ATP energy because it moves substances AGAINST their concentration gradient (from low to high concentration). This is like pushing a ball uphill - it requires energy input. The Na⁺/K⁺ pump consumes about 30% of a cell's ATP!">
+                        <div class="question-text">8. Why does active transport require ATP?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Moves substances against concentration gradient</div>
+                            <div class="option" data-choice="B">B) Moves large molecules</div>
+                            <div class="option" data-choice="C">C) Changes membrane shape</div>
+                            <div class="option" data-choice="D">D) Creates protein channels</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+                </div>
+
+                <!-- Chapter 5 Quiz - 8 questions -->
+                <div class="quiz-chapter">
+                    <h3>Chapter 5: Cell Cycle & Reproduction (8 Questions)</h3>
+                    
+                    <div class="question" data-answer="B" data-explanation="S phase (Synthesis phase) is when DNA replication occurs. The cell copies its entire genome so that each daughter cell will receive a complete set of genetic information. This is the critical 'S' in Interphase (G₁-S-G₂).">
+                        <div class="question-text">9. During which phase does DNA replication occur?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) G₁ phase</div>
+                            <div class="option" data-choice="B">B) S phase</div>
+                            <div class="option" data-choice="C">C) G₂ phase</div>
+                            <div class="option" data-choice="D">D) M phase</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="Anaphase is when sister chromatids separate and move to opposite poles of the cell. The centromeres divide and spindle fibers pull the chromatids apart. This ensures each daughter cell gets identical genetic information. Remember 'A' for 'Apart'!">
+                        <div class="question-text">10. Sister chromatids separate during which phase?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Prophase</div>
+                            <div class="option" data-choice="B">B) Metaphase</div>
+                            <div class="option" data-choice="C">C) Anaphase</div>
+                            <div class="option" data-choice="D">D) Telophase</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="A" data-explanation="The PRIMARY difference: Mitosis produces 2 daughter cells while Meiosis produces 4. Additionally, mitosis maintains diploid (2n) while meiosis produces haploid (n) cells. Mitosis is for growth/repair, meiosis is for sexual reproduction (making gametes).">
+                        <div class="question-text">11. PRIMARY difference between mitosis and meiosis?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Mitosis produces 2 cells, meiosis 4 cells</div>
+                            <div class="option" data-choice="B">B) Mitosis in plants, meiosis in animals</div>
+                            <div class="option" data-choice="C">C) Mitosis requires energy, meiosis doesn't</div>
+                            <div class="option" data-choice="D">D) Mitosis for skin, meiosis for nerves</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="Crossing over (genetic recombination) occurs during Prophase I of meiosis when homologous chromosomes pair up and exchange DNA segments. This creates genetic variation - each gamete is genetically unique! This NEVER happens in mitosis.">
+                        <div class="question-text">12. Crossing over creates genetic variation during:</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Prophase of mitosis</div>
+                            <div class="option" data-choice="B">B) Prophase I of meiosis</div>
+                            <div class="option" data-choice="C">C) Metaphase II of meiosis</div>
+                            <div class="option" data-choice="D">D) Anaphase of mitosis</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="Cancer cells have UNCONTROLLED cell division - they've lost normal regulation! Other characteristics include: lack of differentiation, abnormal nuclei, ability to metastasize (spread), and forming tumors. Controlled division is what NORMAL cells do.">
+                        <div class="question-text">13. Cancer cells are characterized by all EXCEPT:</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Lack of differentiation</div>
+                            <div class="option" data-choice="B">B) Controlled cell division</div>
+                            <div class="option" data-choice="C">C) Abnormal nuclei</div>
+                            <div class="option" data-choice="D">D) Ability to metastasize</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="Interphase takes up about 90% of the cell cycle and includes G₁ (growth), S (DNA synthesis), and G₂ (preparation for mitosis). M phase (mitosis + cytokinesis) is only about 10% of the cycle. The cell spends most of its life NOT dividing!">
+                        <div class="question-text">14. What percentage of the cell cycle is Interphase?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) 50%</div>
+                            <div class="option" data-choice="B">B) 70%</div>
+                            <div class="option" data-choice="C">C) 90%</div>
+                            <div class="option" data-choice="D">D) 10%</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="A" data-explanation="G₁ checkpoint is the MOST IMPORTANT because it determines whether the cell will commit to division or enter G₀ (resting state). It checks for adequate cell size, nutrients, growth factors, and DNA damage. If conditions aren't right, division stops here!">
+                        <div class="question-text">15. Which checkpoint is most critical for cell cycle control?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) G₁ checkpoint</div>
+                            <div class="option" data-choice="B">B) G₂ checkpoint</div>
+                            <div class="option" data-choice="C">C) M checkpoint</div>
+                            <div class="option" data-choice="D">D) S checkpoint</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="D" data-explanation="Meiosis reduces chromosome number from diploid (2n) to haploid (n). It does this through TWO divisions: Meiosis I separates homologous chromosomes (reduction), and Meiosis II separates sister chromatids. Result: 4 haploid gametes, each with half the original chromosome number.">
+                        <div class="question-text">16. How does meiosis reduce chromosome number?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) By destroying half the chromosomes</div>
+                            <div class="option" data-choice="B">B) Through one division only</div>
+                            <div class="option" data-choice="C">C) By skipping DNA replication</div>
+                            <div class="option" data-choice="D">D) Through two consecutive divisions</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+                </div>
+
+                <!-- Chapter 6 Quiz - 7 questions -->
+                <div class="quiz-chapter">
+                    <h3>Chapter 6: Genetics & Heredity (7 Questions)</h3>
+                    
+                    <div class="question" data-answer="B" data-explanation="When both parents are heterozygous (Tt), the Punnett square shows: TT (25%), Tt (50%), tt (25%). So the probability of homozygous recessive (tt) offspring is 25% or 1/4. This follows Mendel's 3:1 phenotype ratio.">
+                        <div class="question-text">17. If both parents are Tt, probability of tt offspring?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) 0%</div>
+                            <div class="option" data-choice="B">B) 25%</div>
+                            <div class="option" data-choice="C">C) 50%</div>
+                            <div class="option" data-choice="D">D) 75%</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="The dihybrid cross (TtGg × TtGg) for two independent traits produces a 9:3:3:1 phenotype ratio. This means: 9 showing both dominant traits, 3 first dominant + second recessive, 3 first recessive + second dominant, 1 both recessive. This demonstrates Mendel's Law of Independent Assortment!">
+                        <div class="question-text">18. Dihybrid cross TtGg × TtGg phenotype ratio?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) 3:1</div>
+                            <div class="option" data-choice="B">B) 1:2:1</div>
+                            <div class="option" data-choice="C">C) 9:3:3:1</div>
+                            <div class="option" data-choice="D">D) 1:1:1:1</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="Mendel's Law of Independent Assortment states that each pair of alleles segregates INDEPENDENTLY during gamete formation. This means the inheritance of one trait doesn't affect another trait's inheritance. The physical basis is the random orientation of chromosome pairs during Meiosis I.">
+                        <div class="question-text">19. Law of Independent Assortment means:</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Alleles segregate together</div>
+                            <div class="option" data-choice="B">B) Each allele pair segregates independently</div>
+                            <div class="option" data-choice="C">C) Dominant masks recessive</div>
+                            <div class="option" data-choice="D">D) Genes are on chromosomes</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="Sex-linked disorders are more common in males because males have only ONE X chromosome (XY). If it carries the mutant allele, they express the disorder - no second X to compensate! Females have TWO X chromosomes (XX), so they can be carriers if one X is normal. Examples: hemophilia, color blindness.">
+                        <div class="question-text">20. Why are sex-linked disorders more common in males?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Males have two X chromosomes</div>
+                            <div class="option" data-choice="B">B) Males only need one mutant X allele</div>
+                            <div class="option" data-choice="C">C) Males cannot be carriers</div>
+                            <div class="option" data-choice="D">D) Y chromosome carries disease</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="In incomplete dominance, NEITHER allele is completely dominant. When RR (red) crosses with WW (white), all RW offspring show an INTERMEDIATE phenotype - pink! The genotype ratio (1:2:1) matches the phenotype ratio. This differs from complete dominance where heterozygotes look like the dominant parent.">
+                        <div class="question-text">21. In incomplete dominance, RR × WW produces:</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) All red flowers</div>
+                            <div class="option" data-choice="B">B) All white flowers</div>
+                            <div class="option" data-choice="C">C) All pink flowers</div>
+                            <div class="option" data-choice="D">D) 50% red, 50% white</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="A testcross crosses an individual with dominant phenotype (unknown genotype: TT or Tt?) with a homozygous recessive (tt). Results reveal the unknown genotype: If offspring are 1:1 (tall:short), parent was Tt. If all offspring are tall, parent was TT. This is the ONLY way to determine genotype from phenotype!">
+                        <div class="question-text">22. A testcross is used to determine:</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Phenotype of offspring</div>
+                            <div class="option" data-choice="B">B) If dominant phenotype is TT or Tt</div>
+                            <div class="option" data-choice="C">C) Number of chromosomes</div>
+                            <div class="option" data-choice="D">D) Sex of offspring</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="A" data-explanation="Humans have 23 PAIRS = 46 total chromosomes. Of these, 22 pairs are autosomes (control most traits) and 1 pair is sex chromosomes (XX for female, XY for male). Each parent contributes 23 chromosomes (n) to form the diploid (2n = 46) offspring.">
+                        <div class="question-text">23. How many chromosome pairs do humans have?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) 23 pairs</div>
+                            <div class="option" data-choice="B">B) 46 pairs</div>
+                            <div class="option" data-choice="C">C) 22 pairs</div>
+                            <div class="option" data-choice="D">D) 24 pairs</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+                </div>
+
+                <!-- Chapter 7 Quiz - 7 questions -->
+                <div class="quiz-chapter">
+                    <h3>Chapter 7: Animal Tissues (7 Questions)</h3>
+                    
+                    <div class="question" data-answer="B" data-explanation="Simple squamous epithelium is found in the lungs (alveoli) for gas exchange. It's VERY THIN (single layer of flat cells) which allows efficient diffusion of O₂ and CO₂. Also found lining blood capillaries. 'Simple' = one layer, 'Squamous' = flat like fried egg.">
+                        <div class="question-text">24. Which epithelial tissue in lungs for gas exchange?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Stratified squamous</div>
+                            <div class="option" data-choice="B">B) Simple squamous</div>
+                            <div class="option" data-choice="C">C) Simple columnar</div>
+                            <div class="option" data-choice="D">D) Pseudostratified</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="Fibrous connective tissue has densely packed collagen fibers making it very STRONG. It forms tendons (attach muscle to bone) and ligaments (attach bone to bone). The parallel arrangement of collagen gives tremendous tensile strength for withstanding pulling forces.">
+                        <div class="question-text">25. Which connective tissue forms tendons?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Loose connective</div>
+                            <div class="option" data-choice="B">B) Adipose</div>
+                            <div class="option" data-choice="C">C) Fibrous connective</div>
+                            <div class="option" data-choice="D">D) Cartilage</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="Smooth muscle is INVOLUNTARY (not under conscious control) and found in walls of internal organs like intestines, blood vessels, and bladder. It's non-striated (no stripes) and contracts slowly but can sustain contractions. It moves food through digestive tract via peristalsis!">
+                        <div class="question-text">26. Involuntary muscle in intestine walls?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Skeletal muscle</div>
+                            <div class="option" data-choice="B">B) Cardiac muscle</div>
+                            <div class="option" data-choice="C">C) Smooth muscle</div>
+                            <div class="option" data-choice="D">D) Striated muscle</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="C" data-explanation="Nervous tissue's PRIMARY function is to sense stimuli and rapidly transmit information via electrical impulses. Neurons conduct signals, while supporting cells (glia) insulate, nourish, and regulate. This allows rapid communication and coordination throughout the body - brain, spinal cord, and nerves!">
+                        <div class="question-text">27. Primary function of nervous tissue?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Provide structural support</div>
+                            <div class="option" data-choice="B">B) Store energy</div>
+                            <div class="option" data-choice="C">C) Sense stimuli and transmit information</div>
+                            <div class="option" data-choice="D">D) Protect organs</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="D" data-explanation="The urinary system (kidneys, bladder) removes metabolic wastes like urea, regulates blood pH by controlling H⁺ and HCO₃⁻ levels, and maintains water/electrolyte balance. Kidneys filter blood and produce urine, eliminating toxic wastes while keeping essential substances!">
+                        <div class="question-text">28. Which system removes wastes and regulates blood pH?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Digestive</div>
+                            <div class="option" data-choice="B">B) Respiratory</div>
+                            <div class="option" data-choice="C">C) Circulatory</div>
+                            <div class="option" data-choice="D">D) Urinary</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="B" data-explanation="Adipose tissue is specialized connective tissue made of fat-filled cells. Functions: energy storage (most efficient form), insulation (thermal regulation), cushioning (protects organs), and hormone production (leptin). Found under skin and around organs.">
+                        <div class="question-text">29. What is the primary function of adipose tissue?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Support and protection</div>
+                            <div class="option" data-choice="B">B) Fat storage and insulation</div>
+                            <div class="option" data-choice="C">C) Transport substances</div>
+                            <div class="option" data-choice="D">D) Produce blood cells</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+
+                    <div class="question" data-answer="A" data-explanation="Stratified squamous epithelium has MULTIPLE layers of flat cells, providing excellent protection from abrasion and mechanical stress. Found in high-wear areas: outer skin (epidermis), mouth lining, esophagus. The multiple layers can be constantly replaced as outer cells wear away.">
+                        <div class="question-text">30. Which tissue protects skin from abrasion?</div>
+                        <div class="options">
+                            <div class="option" data-choice="A">A) Stratified squamous epithelium</div>
+                            <div class="option" data-choice="B">B) Simple squamous</div>
+                            <div class="option" data-choice="C">C) Loose connective</div>
+                            <div class="option" data-choice="D">D) Adipose tissue</div>
+                        </div>
+                        <button class="explain-btn">💡 Why is this the answer?</button>
+                        <div class="explanation"><h5>✅ Explanation:</h5><p></p></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Controls -->
+                <div class="quiz-controls">
+                    <button class="quiz-btn" id="showScoreBtn">📊 Show My Score</button>
+                    <button class="quiz-btn reset" id="resetQuizBtn">🔄 Reset Quiz</button>
+                </div>
+
+                <div class="score-display" id="scoreDisplay">
+                    <h3>Your Score: <span id="scoreValue">0</span>/30</h3>
+                    <p id="scoreMessage">Great job! Keep practicing!</p>
+                </div>
+            </div>
+        </section>
+
+        <footer style="background:#0f172a;color:white;padding:60px 40px;text-align:center;">
+            <p style="font-size:1.4em;font-weight:800;margin-bottom:15px;">🧬 ADVANCED MEDICAL BIOLOGY</p>
+            <p style="font-size:1.1em;opacity:0.9;">Complete Study Guide with Drawing Tools & Interactive Practice</p>
+        </footer>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Back to top">↑</button>
+
+    <!-- Drawing Controls -->
+    <div class="drawing-controls">
+        <button id="drawMode" class="draw-btn">✏️ Draw</button>
+        <button id="eraseMode" class="draw-btn">🧽 Erase</button>
+        <div class="divider"></div>
+        <button id="undoBtn" class="draw-btn">↩️ Undo</button>
+        <button id="clearBtn" class="draw-btn">🗑️ Clear</button>
+        <div class="divider"></div>
+        <input type="color" id="colorPicker" class="color-picker-input" value="#dc2626">
+    </div>
+
+    <script>
+        // ============ DRAWING FUNCTIONALITY ============
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const drawModeBtn = document.getElementById('drawMode');
+        const eraseModeBtn = document.getElementById('eraseMode');
+        const undoBtn = document.getElementById('undoBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const colorPicker = document.getElementById('colorPicker');
+
+        let drawing = false;
+        let mode = 'none';
+        let history = [];
+
+        function initCanvas() {
+            canvas.width = document.documentElement.scrollWidth;
+            canvas.height = document.documentElement.scrollHeight;
+            saveState();
+        }
+
+        window.addEventListener('load', initCanvas);
+        window.addEventListener('resize', initCanvas);
+
+        drawModeBtn.onclick = () => setMode('draw');
+        eraseModeBtn.onclick = () => setMode('erase');
+
+        function setMode(newMode) {
+            if (mode === newMode) {
+                mode = 'none';
+                canvas.classList.remove('active');
+                drawModeBtn.classList.remove('active');
+                eraseModeBtn.classList.remove('active');
+            } else {
+                mode = newMode;
+                canvas.classList.add('active');
+                drawModeBtn.classList.toggle('active', mode === 'draw');
+                eraseModeBtn.classList.toggle('active', mode === 'erase');
+            }
+        }
+
+        function getCoords(e) {
+            const x = (e.clientX || e.touches[0].clientX) + window.scrollX;
+            const y = (e.clientY || e.touches[0].clientY) + window.scrollY;
+            return { x, y };
+        }
+
+        function start(e) {
+            if (mode === 'none') return;
+            drawing = true;
+            const { x, y } = getCoords(e);
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function move(e) {
+            if (!drawing || mode === 'none') return;
+            if (e.cancelable) e.preventDefault();
+
+            const { x, y } = getCoords(e);
+            
+            ctx.lineWidth = mode === 'erase' ? 30 : 4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            if (mode === 'erase') {
+                ctx.globalCompositeOperation = 'destination-out';
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = colorPicker.value;
+            }
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+        function stop() {
+            if (drawing) {
+                drawing = false;
+                saveState();
+            }
+        }
+
+        function saveState() {
+            if (history.length > 20) history.shift();
+            history.push(canvas.toDataURL());
+        }
+
+        undoBtn.onclick = () => {
+            if (history.length > 1) {
+                history.pop();
+                let previousState = new Image();
+                previousState.src = history[history.length - 1];
+                previousState.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.drawImage(previousState, 0, 0);
+                };
+            }
+        };
+
+        clearBtn.onclick = () => {
+            if(confirm("Clear all drawings?")) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                saveState();
+            }
+        };
+
+        canvas.addEventListener('mousedown', start);
+        window.addEventListener('mousemove', move);
+        window.addEventListener('mouseup', stop);
+
+        canvas.addEventListener('touchstart', start, {passive: false});
+        canvas.addEventListener('touchmove', move, {passive: false});
+        canvas.addEventListener('touchend', stop);
+
+        // ============ BACK TO TOP ============
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ============ INTERACTIVE QUIZ ============
+        let totalQuestions = 30;
+        let answeredQuestions = 0;
+        let correctAnswers = 0;
+
+        document.querySelectorAll('.question').forEach(question => {
+            const correctAnswer = question.dataset.answer;
+            const explanation = question.dataset.explanation;
+            const options = question.querySelectorAll('.option');
+            const explainBtn = question.querySelector('.explain-btn');
+            const explanationDiv = question.querySelector('.explanation');
+            
+            // Set explanation text
+            explanationDiv.querySelector('p').textContent = explanation;
+            
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    
+                    const userChoice = this.dataset.choice;
+                    
+                    options.forEach(opt => opt.classList.add('disabled'));
+                    
+                    if (userChoice === correctAnswer) {
+                        this.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        this.classList.add('wrong');
+                        options.forEach(opt => {
+                            if (opt.dataset.choice === correctAnswer) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                    
+                    explainBtn.classList.add('show');
+                    answeredQuestions++;
+                });
+            });
+
+            explainBtn.addEventListener('click', function() {
+                explanationDiv.classList.toggle('show');
+                this.textContent = explanationDiv.classList.contains('show') ? 
+                    '🔼 Hide Explanation' : '💡 Why is this the answer?';
+            });
+        });
+
+        document.getElementById('showScoreBtn').addEventListener('click', function() {
+            if (answeredQuestions === 0) {
+                alert('Please answer some questions first!');
+                return;
+            }
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreValue = document.getElementById('scoreValue');
+            const scoreMessage = document.getElementById('scoreMessage');
+            
+            scoreValue.textContent = correctAnswers;
+            
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            
+            if (percentage === 100) {
+                scoreMessage.textContent = '🎉 Perfect Score! Outstanding! You mastered the material!';
+            } else if (percentage >= 90) {
+                scoreMessage.textContent = '🌟 Excellent! Almost perfect! Keep up the great work!';
+            } else if (percentage >= 80) {
+                scoreMessage.textContent = '👍 Very Good! Strong understanding of the concepts!';
+            } else if (percentage >= 70) {
+                scoreMessage.textContent = '✅ Good job! Review the topics you missed!';
+            } else if (percentage >= 60) {
+                scoreMessage.textContent = '📚 Fair effort! Spend more time studying the material!';
+            } else {
+                scoreMessage.textContent = '⚠️ Keep practicing! Review all chapters carefully!';
+            }
+            
+            scoreDisplay.classList.add('show');
+            scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        document.getElementById('resetQuizBtn').addEventListener('click', function() {
+            if (confirm('Reset quiz? This will clear all your answers.')) {
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
