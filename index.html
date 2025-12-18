@@ -118,7 +118,7 @@ nav a{padding:10px 18px;font-size:0.88em}
 
 <nav>
 <ul>
-
+<li><a href="#content">📚 محتوى</a></li>
 <li><a href="#ch4">Ch 4</a></li>
 <li><a href="#ch5">Ch 5</a></li>
 <li><a href="#ch6">Ch 6</a></li>
@@ -941,214 +941,83 @@ nav a{padding:10px 18px;font-size:0.88em}
                         <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
                         <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
                     </div>
-                </div>
+                </div></div>
 
-                <!-- Quiz Controls -->
-                <div class="quiz-controls">
-                    <button class="quiz-btn" id="showScoreBtn">📊 اعرض درجتي</button>
-                    <button class="quiz-btn reset" id="resetQuizBtn">🔄 إعادة الاختبار</button>
-                </div>
+<div class="qctrl">
+<button class="qbtn" id="showScore">📊 اعرض درجتي</button>
+<button class="qbtn reset" id="resetQuiz">🔄 إعادة الاختبار</button>
+</div>
 
-                <div class="score-display" id="scoreDisplay">
-                    <h3>درجتك: <span id="scoreValue">0</span>/30</h3>
-                    <p id="scoreMessage">ممتاز!</p>
-                </div>
-            </div>
-        </section>
+<div class="score" id="scoreBox">
+<h3>درجتك: <span id="scoreVal">0</span>/<span id="totalQ">2</span></h3>
+<p id="scoreMsg"></p>
+</div>
 
-        <footer style="background:#0f172a;color:white;padding:60px 40px;text-align:center">
-            <p style="font-size:1.4em;font-weight:800;margin-bottom:15px">🧬 ADVANCED MEDICAL BIOLOGY</p>
-            <p style="font-size:1.1em;opacity:0.9">Complete Interactive Study Guide with Drawing Tools</p>
-        </footer>
-    </div>
+</div>
+</div>
 
-    <button id="backToTop">↑</button>
+</div>
 
+<button id="topBtn">↑</button>
 
-    <script>
-        // ============ DRAWING - محسّن للسرعة ============
-        const canvas=document.getElementById('drawingCanvas'),ctx=canvas.getContext('2d'),nav=document.getElementById('mainNav');
-        let drawing=false,mode='none',history=[],brushSize=3;
+<script>
+// Toggle Arabic explanation
+function toggleAr(btn) {
+    const content = btn.nextElementSibling;
+    content.classList.toggle('show');
+    btn.classList.toggle('active');
+    btn.textContent = content.classList.contains('show') ? '🔼 إخفاء الشرح' : '📖 الشرح بالعربي';
+}
 
-        function initCanvas(){
-            const docHeight = Math.max(
-                document.body.scrollHeight,
-                document.body.offsetHeight,
-                document.documentElement.clientHeight,
-                document.documentElement.scrollHeight,
-                document.documentElement.offsetHeight
-            );
-            canvas.width=document.documentElement.scrollWidth;
-            canvas.height=docHeight;
-            canvas.style.width=canvas.width+'px';
-            canvas.style.height=canvas.height+'px';
-            ctx.lineCap='round';
-            ctx.lineJoin='round';
-            ctx.imageSmoothingEnabled=true;
-            ctx.imageSmoothingQuality='high';
-            saveState();
-        }
-        window.addEventListener('load',initCanvas);
-        window.addEventListener('resize',initCanvas);
+// Scroll to top
+window.addEventListener('scroll', () => {
+    document.getElementById('topBtn').classList.toggle('show', window.pageYOffset > 300);
+});
+document.getElementById('topBtn').onclick = () => window.scrollTo({top:0, behavior:'smooth'});
 
-        document.getElementById('drawMode').onclick=()=>setMode('draw');
-        document.getElementById('eraseMode').onclick=()=>setMode('erase');
-        
-        function setMode(newMode){
-            mode=mode===newMode?'none':newMode;
-            canvas.classList.toggle('active',mode!=='none');
-            document.querySelectorAll('.draw-btn').forEach(b=>b.classList.remove('active'));
-            if(mode!=='none')event.target.classList.add('active');
-        }
+// Smooth scroll for nav links
+document.querySelectorAll('nav a').forEach(a => a.onclick = e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+});
 
-        function getCoords(e){
-            const touch=e.touches?e.touches[0]:e;
-            const rect=canvas.getBoundingClientRect();
-            return{
-                x:touch.clientX - rect.left + window.scrollX,
-                y:touch.clientY - rect.top + window.scrollY
-            };
-        }
+// Quiz functionality
+let answered = 0, correct = 0;
+const total = document.querySelectorAll('.q').length;
+document.getElementById('totalQ').textContent = total;
 
-        function start(e){
-            if(mode==='none')return;
-            drawing=true;
-            const{x,y}=getCoords(e);
-            ctx.beginPath();
-            ctx.moveTo(x,y);
-        }
+document.querySelectorAll('.q').forEach(q => {
+    const ans = q.dataset.answer, exp = q.dataset.explanation;
+    const opts = q.querySelectorAll('.opt'), btn = q.querySelector('.ebtn'), expDiv = q.querySelector('.exp');
+    expDiv.querySelector('p').textContent = exp;
+    
+    opts.forEach(o => o.onclick = function() {
+        if(this.classList.contains('disabled')) return;
+        opts.forEach(x => x.classList.add('disabled'));
+        const choice = this.dataset.choice;
+        if(choice === ans) { this.classList.add('correct'); correct++; }
+        else { this.classList.add('wrong'); opts.forEach(x => { if(x.dataset.choice === ans) x.classList.add('correct'); }); }
+        btn.classList.add('show');
+        answered++;
+    });
+    
+    btn.onclick = () => {
+        expDiv.classList.toggle('show');
+        btn.textContent = expDiv.classList.contains('show') ? '🔼 إخفاء الشرح' : '💡 اعرف ليش الإجابة صح';
+    };
+});
 
-        function move(e){
-            if(!drawing||mode==='none')return;
-            if(e.cancelable)e.preventDefault();
-            const{x,y}=getCoords(e);
-            brushSize=document.getElementById('brushSize').value;
-            ctx.lineWidth=mode==='erase'?20:brushSize;
-            if(mode==='erase'){
-                ctx.globalCompositeOperation='destination-out';
-            }else{
-                ctx.globalCompositeOperation='source-over';
-                ctx.strokeStyle=document.getElementById('colorPicker').value;
-            }
-            ctx.lineTo(x,y);
-            ctx.stroke();
-        }
+document.getElementById('showScore').onclick = () => {
+    if(answered === 0) { alert('أجب على الأسئلة أولاً!'); return; }
+    const box = document.getElementById('scoreBox'), val = document.getElementById('scoreVal'), msg = document.getElementById('scoreMsg');
+    const pct = (correct/total)*100;
+    val.textContent = correct;
+    msg.textContent = pct === 100 ? '🎉 ممتاز! درجة كاملة!' : pct >= 90 ? '🌟 ممتاز جداً!' : pct >= 80 ? '👍 جيد جداً!' : pct >= 70 ? '✅ جيد!' : pct >= 60 ? '📚 مقبول!' : '⚠️ راجع المادة!';
+    box.classList.add('show');
+    box.scrollIntoView({behavior:'smooth'});
+};
 
-        function stop(){
-            if(drawing){
-                drawing=false;
-                saveState();
-            }
-        }
-
-        function saveState(){
-            if(history.length>15)history.shift();
-            history.push(canvas.toDataURL());
-        }
-
-        document.getElementById('undoBtn').onclick=()=>{
-            if(history.length>1){
-                history.pop();
-                let img=new Image();
-                img.src=history[history.length-1];
-                img.onload=()=>{
-                    ctx.clearRect(0,0,canvas.width,canvas.height);
-                    ctx.globalCompositeOperation='source-over';
-                    ctx.drawImage(img,0,0);
-                };
-            }
-        };
-
-        document.getElementById('clearBtn').onclick=()=>{
-            if(confirm("هل تريد مسح جميع الرسومات؟")){
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                saveState();
-            }
-        };
-
-        canvas.addEventListener('mousedown',start);
-        window.addEventListener('mousemove',move);
-        window.addEventListener('mouseup',stop);
-        canvas.addEventListener('touchstart',start,{passive:false});
-        canvas.addEventListener('touchmove',move,{passive:false});
-        canvas.addEventListener('touchend',stop);
-
-        // ============ NAVIGATION - يظهر عند التمرير للأعلى ============
-        let lastScroll=0;
-        window.addEventListener('scroll',()=>{
-            const scroll=window.pageYOffset;
-            if(scroll>100){
-                nav.classList.toggle('visible',scroll<lastScroll);
-            }else{
-                nav.classList.remove('visible');
-            }
-            lastScroll=scroll;
-            document.getElementById('backToTop').classList.toggle('show',scroll>300);
-        });
-
-        document.getElementById('backToTop').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
-        
-        document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',e=>{
-            e.preventDefault();
-            document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth',block:'start'});
-        }));
-
-        // ============ QUIZ - 30 Questions ============
-        let answeredQuestions=0,correctAnswers=0,totalQuestions=30;
-        
-        document.querySelectorAll('.question').forEach(q=>{
-            const correct=q.dataset.answer,explanation=q.dataset.explanation;
-            const options=q.querySelectorAll('.option'),explainBtn=q.querySelector('.explain-btn'),explanationDiv=q.querySelector('.explanation');
-            
-            explanationDiv.querySelector('p').textContent=explanation;
-            
-            options.forEach(o=>o.addEventListener('click',function(){
-                if(this.classList.contains('disabled'))return;
-                const choice=this.dataset.choice;
-                options.forEach(opt=>opt.classList.add('disabled'));
-                
-                if(choice===correct){
-                    this.classList.add('correct');
-                    correctAnswers++;
-                }else{
-                    this.classList.add('wrong');
-                    options.forEach(opt=>{
-                        if(opt.dataset.choice===correct)opt.classList.add('correct');
-                    });
-                }
-                
-                explainBtn.classList.add('show');
-                answeredQuestions++;
-            }));
-            
-            explainBtn.addEventListener('click',()=>{
-                explanationDiv.classList.toggle('show');
-                explainBtn.textContent=explanationDiv.classList.contains('show')?'🔼 إخفاء الشرح':'💡 اعرف ليش الإجابة صح';
-            });
-        });
-
-        document.getElementById('showScoreBtn').addEventListener('click',()=>{
-            if(answeredQuestions===0){
-                alert('الرجاء الإجابة على الأسئلة أولاً!');
-                return;
-            }
-            
-            const scoreDisplay=document.getElementById('scoreDisplay'),scoreValue=document.getElementById('scoreValue'),scoreMessage=document.getElementById('scoreMessage');
-            const percentage=(correctAnswers/totalQuestions)*100;
-            
-            scoreValue.textContent=correctAnswers;
-            scoreMessage.textContent=percentage===100?'🎉 ممتاز! درجة كاملة! أنت محترف!':percentage>=90?'🌟 ممتاز جداً! فهم قوي للمادة!':percentage>=80?'👍 جيد جداً! أداء ممتاز!':percentage>=70?'✅ جيد! راجع المواضيع التي أخطأت فيها!':percentage>=60?'📚 مقبول! تحتاج مزيد من المذاكرة!':'⚠️ راجع المادة بتركيز أكبر!';
-            
-            scoreDisplay.classList.add('show');
-            scoreDisplay.scrollIntoView({behavior:'smooth',block:'center'});
-        });
-
-        document.getElementById('resetQuizBtn').addEventListener('click',()=>{
-            if(confirm('هل تريد إعادة الاختبار؟ سيتم حذف جميع إجاباتك.')){
-                location.reload();
-            }
-        });
-    </script>
+document.getElementById('resetQuiz').onclick = () => { if(confirm('إعادة الاختبار؟')) location.reload(); };
+</script>
 </body>
 </html>
-
