@@ -48,7 +48,6 @@ h4{font-size:clamp(1.2em,2.8vw,1.7em);color:var(--accent);margin:25px 0 15px;fon
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px;margin:35px 0}
 .card{background:linear-gradient(135deg,#ffffff 0%,#f1f5f9 100%);padding:30px;border-radius:18px;border-left:6px solid var(--accent);box-shadow:0 6px 30px rgba(0,0,0,0.08);transition:all 0.35s ease}
 .card:hover{transform:translateY(-8px);box-shadow:0 15px 50px rgba(0,0,0,0.18);border-left-color:var(--secondary)}
-.card .icon{font-size:3em;margin-bottom:15px}
 .card h4{color:var(--primary);font-size:1.4em;margin-bottom:12px;font-weight:800}
 .card p{color:#475569;line-height:1.7;margin:8px 0;font-size:1.02em}
 
@@ -70,41 +69,54 @@ li strong{color:var(--primary);font-weight:700}
 .key{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;padding:18px 35px;border-radius:50px;display:inline-block;margin:15px 10px;font-weight:800;font-size:clamp(1em,2.3vw,1.15em);box-shadow:0 8px 30px rgba(99,102,241,0.45)}
 
 /* Quiz */
-.quiz{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);padding:70px 40px;color:white}
-.qc{max-width:1300px;margin:0 auto}
-.qch{background:rgba(255,255,255,0.06);backdrop-filter:blur(15px);padding:40px;border-radius:25px;margin-bottom:50px;border:3px solid rgba(255,255,255,0.12)}
-.qch h3{color:white;font-size:clamp(1.7em,4.5vw,2.5em);margin-bottom:35px;border-bottom:4px solid var(--accent);padding-bottom:18px}
-.q{background:rgba(255,255,255,0.09);padding:30px;border-radius:18px;margin-bottom:25px;border-left:5px solid var(--accent)}
-.qt{font-size:clamp(1.05em,2.8vw,1.3em);font-weight:700;margin-bottom:20px;color:#f1f5f9;line-height:1.6}
-.opts{display:grid;gap:12px;margin-top:15px}
-.opt{background:rgba(255,255,255,0.06);padding:14px 22px;border-radius:12px;border:2px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.3s ease;font-weight:600;font-size:clamp(0.95em,2.2vw,1.05em)}
-.opt:hover{background:rgba(255,255,255,0.18);transform:translateX(8px)}
-.opt.correct{background:#059669!important;border-color:#10b981!important}
-.opt.wrong{background:#dc2626!important;border-color:#ef4444!important}
-.opt.disabled{cursor:not-allowed;opacity:0.65}
+.quiz{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);padding:70px 40px;color:white;position:relative}
+.quiz::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.05)"/></svg>');opacity:0.3;z-index:0}
+.qc{max-width:1300px;margin:0 auto;position:relative;z-index:1}
+.qch{background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);padding:50px 40px;border-radius:30px;margin-bottom:50px;border:2px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.qch h3{color:white;font-size:clamp(1.8em,4.5vw,2.6em);margin-bottom:40px;padding-bottom:20px;border-bottom:3px solid var(--accent);font-family:'Playfair Display',serif}
 
-.exp{background:rgba(255,255,255,0.12);padding:22px;border-radius:15px;margin-top:15px;border-right:5px solid #fbbf24;display:none;font-family:'Cairo',sans-serif;direction:rtl;text-align:right;line-height:1.9}
+.q{background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04));padding:35px;border-radius:20px;margin-bottom:30px;border-left:5px solid var(--accent);backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,0.2);transition:all 0.3s ease}
+.q:hover{transform:translateX(5px);box-shadow:0 15px 40px rgba(0,0,0,0.3)}
+
+.qt{font-size:clamp(1.08em,2.8vw,1.35em);font-weight:700;margin-bottom:25px;color:#f8fafc;line-height:1.7;text-shadow:1px 1px 2px rgba(0,0,0,0.3)}
+
+.opts{display:grid;gap:15px;margin-top:20px}
+.opt{background:rgba(255,255,255,0.08);padding:16px 24px;border-radius:15px;border:2px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.35s ease;font-weight:600;font-size:clamp(0.98em,2.2vw,1.08em);color:#e2e8f0;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.opt::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);transition:left 0.5s}
+.opt:hover::before{left:100%}
+.opt:hover{background:rgba(255,255,255,0.15);transform:translateX(10px);border-color:rgba(255,255,255,0.3);box-shadow:0 5px 20px rgba(0,0,0,0.2)}
+.opt.correct{background:linear-gradient(135deg,#059669,#047857)!important;border-color:#10b981!important;color:white!important;box-shadow:0 8px 25px rgba(5,150,105,0.4)!important}
+.opt.wrong{background:linear-gradient(135deg,#dc2626,#b91c1c)!important;border-color:#ef4444!important;color:white!important;box-shadow:0 8px 25px rgba(220,38,38,0.4)!important}
+.opt.disabled{cursor:not-allowed;opacity:0.7}
+
+.exp{background:linear-gradient(135deg,rgba(251,191,36,0.15),rgba(245,158,11,0.1));padding:25px;border-radius:15px;margin-top:20px;border-right:5px solid #fbbf24;font-family:'Cairo',sans-serif;direction:rtl;text-align:right;line-height:2;backdrop-filter:blur(10px);display:none;animation:slideDown 0.4s ease;box-shadow:0 5px 20px rgba(251,191,36,0.2)}
 .exp.show{display:block}
-.exp h5{color:#fbbf24;margin-bottom:12px;font-size:1.2em}
-.ebtn{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;border:none;padding:12px 22px;border-radius:25px;cursor:pointer;font-weight:800;font-family:'Cairo',sans-serif;margin-top:15px;display:none;font-size:clamp(0.9em,2.2vw,1em)}
+.exp h5{color:#fbbf24;margin-bottom:15px;font-size:1.3em;text-shadow:1px 1px 2px rgba(0,0,0,0.2)}
+
+.ebtn{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;border:none;padding:13px 26px;border-radius:30px;cursor:pointer;font-weight:800;font-family:'Cairo',sans-serif;margin-top:18px;font-size:clamp(0.92em,2.2vw,1.05em);transition:all 0.3s ease;box-shadow:0 6px 20px rgba(245,158,11,0.4);display:none}
 .ebtn.show{display:inline-block}
-.ebtn:hover{transform:scale(1.06)}
+.ebtn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(245,158,11,0.6)}
 
-.qctrl{text-align:center;margin-top:50px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
-.qbtn{background:linear-gradient(135deg,#059669,#047857);color:white;border:none;padding:18px 40px;border-radius:35px;font-size:clamp(1.05em,2.8vw,1.3em);font-weight:800;cursor:pointer;transition:all 0.35s ease;box-shadow:0 8px 25px rgba(5,150,105,0.45)}
-.qbtn:hover{transform:translateY(-4px)}
-.qbtn.reset{background:linear-gradient(135deg,#dc2626,#b91c1c)}
+.qctrl{text-align:center;margin-top:60px;display:flex;justify-content:center;gap:25px;flex-wrap:wrap}
+.qbtn{background:linear-gradient(135deg,#059669,#047857);color:white;border:none;padding:20px 45px;border-radius:40px;font-size:clamp(1.08em,2.8vw,1.35em);font-weight:800;cursor:pointer;transition:all 0.35s ease;box-shadow:0 10px 30px rgba(5,150,105,0.4);font-family:'Cairo',sans-serif}
+.qbtn:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(5,150,105,0.6)}
+.qbtn.reset{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 10px 30px rgba(220,38,38,0.4)}
+.qbtn.reset:hover{box-shadow:0 15px 40px rgba(220,38,38,0.6)}
 
-.score{background:linear-gradient(135deg,#059669,#047857);padding:40px;border-radius:25px;text-align:center;margin-top:40px;display:none}
-.score.show{display:block}
-.score h3{font-size:clamp(2.2em,5.5vw,3.3em);margin-bottom:15px}
+.score{background:linear-gradient(135deg,#059669,#047857);padding:50px;border-radius:30px;text-align:center;margin-top:50px;box-shadow:0 20px 60px rgba(5,150,105,0.4);display:none;backdrop-filter:blur(10px)}
+.score.show{display:block;animation:zoomIn 0.5s ease}
+@keyframes zoomIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+.score h3{font-size:clamp(2.5em,5.5vw,3.5em);margin-bottom:20px;text-shadow:2px 2px 4px rgba(0,0,0,0.3);font-family:'Playfair Display',serif}
+.score p{font-size:clamp(1.2em,3vw,1.6em);font-weight:700;font-family:'Cairo',sans-serif}
 
 @media (max-width:768px){
 .chapter,.section,.qch{padding:30px 20px}
 .grid{grid-template-columns:1fr}
 nav ul{gap:6px}
 nav a{padding:10px 18px;font-size:0.88em}
-#topBtn{bottom:20px;right:20px;width:48px;height:48px}
+#topBtn{bottom:30px;right:20px;width:48px;height:48px}
+.q{padding:25px}
+.opts{gap:10px}
 }
 </style>
 </head>
@@ -130,11 +142,6 @@ nav a{padding:10px 18px;font-size:0.88em}
 <div class="section" id="content">
 <h1 class="section-title">📖 Study Content</h1>
 
-<!-- CHAPTER 4: Cell Membrane - كل المعلومات المهمة -->
-<div class="chapter" id="ch4">
-<h2>Chapter 4: Cell Membrane Structure & Transport</h2>
-
-<div class="content-box">
 <h3>The Plasma Membrane</h3>
 <p>The plasma membrane is the <span class="hl">boundary separating</span> cell interior from environment.</p>
 <ul>
@@ -513,444 +520,405 @@ nav a{padding:10px 18px;font-size:0.88em}
 </div>
 </div>
 
-<div class="content-box">
-<h3>Connective Tissue Types</h3>
-<ul>
-<li><strong>Loose:</strong> Joins skin to underlying tissues</li>
-<li><strong>Fibrous:</strong> Dense collagen, forms tendons (muscle to bone)</li>
-<li><strong>Adipose:</strong> Stores fat</li>
-<li><strong>Cartilage:</strong> Strong, flexible, surrounds bone ends</li>
-<li><strong>Bone:</strong> Collagen + minerals (Ca, Mg, phosphate)</li>
-<li><strong>Blood:</strong> Transports substances throughout body</li>
-</ul>
-<button class="ar-toggle" onclick="toggleAr(this)">📖 الشرح بالعربي</button>
-<div class="ar-content">
-<strong>الأنسجة الضامة:</strong> الرخو: يربط الجلد بالأنسجة | الليفي: يكون الأوتار | الدهني: يخزن الدهون | الغضروفي: يحيط بنهايات العظام | العظمي: كولاجين + معادن | الدم: ينقل المواد
+</div>
+
+<!-- QUIZ SECTION - 30 QUESTIONS COMPLETE -->
+<div class="quiz" id="quiz">
+<div class="qc">
+<h1 class="section-title" style="color:white">🎯 Interactive Practice Quiz - 30 Questions</h1>
+<p style="text-align:center;font-size:clamp(1em,3vw,1.2em);margin-bottom:40px;opacity:0.9">
+اختبر معلوماتك - <span style="color:#10b981;font-weight:700">أخضر</span> = صحيح | <span style="color:#ef4444;font-weight:700">أحمر</span> = خطأ
+</p>
+
+<!-- Chapter 4 - 8 Questions -->
+<div class="qch">
+<h3>Chapter 4: Cell Membrane & Transport (8 Questions)</h3>
+
+<div class="q" data-answer="B" data-explanation="الكوليسترول مدمج في الغشاء الخلوي ويوفر الدعم الهيكلي وينظم مرونة الغشاء. يمنع السلاسل الدهنية من الالتصاق في درجات الحرارة الباردة ويمنع الحركة الزائدة في الحرارة العالية، مما يحافظ على ثبات واستقرار الغشاء.">
+<div class="qt">1. Which component provides structural support and regulates membrane fluidity?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Phospholipids</div>
+<div class="opt" data-choice="B">B) Cholesterol</div>
+<div class="opt" data-choice="C">C) Channel proteins</div>
+<div class="opt" data-choice="D">D) Glycoproteins</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+
+<div class="q" data-answer="B" data-explanation="مضخة الصوديوم-البوتاسيوم هي آلية نقل نشط حيوية تضخ 3 أيونات صوديوم للخارج و 2 أيونات بوتاسيوم للداخل لكل جزيء ATP. هذا يحافظ على تدرجات التركيز الأساسية لوظائف الأعصاب والعضلات وتستهلك حوالي 30٪ من طاقة الخلية!">
+<div class="qt">2. How many ions does the sodium-potassium pump move per cycle?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) 2 Na⁺ out, 3 K⁺ in</div>
+<div class="opt" data-choice="B">B) 3 Na⁺ out, 2 K⁺ in</div>
+<div class="opt" data-choice="C">C) 3 Na⁺ out, 3 K⁺ in</div>
+<div class="opt" data-choice="D">D) 2 Na⁺ out, 2 K⁺ in</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+
+<div class="q" data-answer="B" data-explanation="المحلول ناقص التوتر يحتوي على تركيز أقل من المذاب (ماء أكثر) مقارنة بالخلية. الماء يتحرك إلى داخل الخلية بالأسموزية مما يسبب انتفاخها. تذكر: HYPO يعني أقل/تحت - أقل مذاب، لذا الماء يدخل للخلية!">
+<div class="qt">3. A cell placed in solution begins to swell. The solution is:</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Hypertonic</div>
+<div class="opt" data-choice="B">B) Hypotonic</div>
+<div class="opt" data-choice="C">C) Isotonic</div>
+<div class="opt" data-choice="D">D) Amphipathic</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+
+<div class="q" data-answer="C" data-explanation="الابتلاع بوساطة المستقبلات هو الأكثر تحديداً لأن المواد يجب أن ترتبط ببروتينات مستقبلة محددة على سطح الخلية قبل أن تبتلعها الخلية. هذا يسمح للخلايا بامتصاص كميات كبيرة من مواد معينة مثل كوليسترول LDL بشكل انتقائي وفعال.">
+<div class="qt">4. Which endocytosis type is MOST specific?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Phagocytosis</div>
+<div class="opt" data-choice="B">B) Pinocytosis</div>
+<div class="opt" data-choice="C">C) Receptor-mediated endocytosis</div>
+<div class="opt" data-choice="D">D) Exocytosis</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+
+<div class="q" data-answer="C" data-explanation="الانتشار الميسر يستخدم قنوات بروتينية أو ناقلات لمساعدة الجزيئات على عبور الغشاء. لا يزال سلبياً (بدون ATP) ويتحرك مع تدرج التركيز، لكن الجزيئات القطبية الكبيرة مثل الجلوكوز تحتاج هذه البروتينات لأنها لا تستطيع المرور مباشرة عبر الطبقة الدهنية.">
+<div class="qt">5. Facilitated diffusion differs from simple diffusion because it:</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Requires ATP energy</div>
+<div class="opt" data-choice="B">B) Moves against concentration gradient</div>
+<div class="opt" data-choice="C">C) Uses protein channels</div>
+<div class="opt" data-choice="D">D) Only transports water</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+
+<div class="q" data-answer="A" data-explanation="البلعمة تعني 'الأكل الخلوي' - الخلية تمد أقدام كاذبة لتحيط وتبتلع جسيمات صلبة كبيرة مثل البكتيريا. هذه هي الطريقة التي تدمر بها كريات الدم البيضاء مسببات الأمراض! تشكل فجوة كبيرة تندمج مع الليزوزومات للهضم والقضاء على العدوى.">
+<div class="qt">6. Which process do white blood cells use to engulf bacteria?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Phagocytosis</div>
+<div class="opt" data-choice="B">B) Pinocytosis</div>
+<div class="opt" data-choice="C">C) Osmosis</div>
+<div class="opt" data-choice="D">D) Facilitated diffusion</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+
+<div class="q" data-answer="D" data-explanation="بروتينات الوصل تربط الخلايا المجاورة وتسمح بالتواصل بينها. الأنواع تشمل: الوصلات الفجوية (تسمح بمرور جزيئات صغيرة)، الوصلات الضيقة (تختم الخلايا معاً)، والديسموسومات (توفر تثبيتاً قوياً). هذه حاسمة لسلامة الأنسجة والوظيفة المنسقة.">
+<div class="qt">7. Which protein function allows cells to communicate?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Channel proteins</div>
+<div class="opt" data-choice="B">B) Transport proteins</div>
+<div class="opt" data-choice="C">C) Receptor proteins</div>
+<div class="opt" data-choice="D">D) Junction proteins</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+
+<div class="q" data-answer="A" data-explanation="النقل النشط يحتاج طاقة ATP لأنه يحرك المواد ضد تدرج التركيز (من منخفض إلى عالي). هذا مثل دفع كرة إلى أعلى التل - يتطلب مدخل طاقة. مضخة الصوديوم-البوتاسيوم تستهلك حوالي 30٪ من ATP الخلية، مما يدل على أهميتها الكبيرة!">
+<div class="qt">8. Why does active transport require ATP?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Moves substances against concentration gradient</div>
+<div class="opt" data-choice="B">B) Moves large molecules</div>
+<div class="opt" data-choice="C">C) Changes membrane shape</div>
+<div class="opt" data-choice="D">D) Creates protein channels</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
 </div>
 </div>
 
-<div class="content-box">
-<h3>Organ Systems</h3>
-<p>Multiple organs working together perform vital body functions</p>
-<ul>
-<li><strong>Circulatory:</strong> Delivers O₂ and nutrients, removes CO₂ and wastes</li>
-<li><strong>Respiratory:</strong> Gas exchange (O₂ in, CO₂ out)</li>
-<li><strong>Digestive:</strong> Ingests, digests, absorbs nutrients</li>
-<li><strong>Urinary:</strong> Removes waste, regulates blood chemistry</li>
-<li><strong>Nervous:</strong> Coordinates body activities</li>
-<li><strong>Endocrine:</strong> Secretes hormones regulating activities</li>
-<li><strong>Immune/Lymphatic:</strong> Protects from infection and cancer</li>
-<li><strong>Integumentary:</strong> Protects body (skin, hair, nails)</li>
-<li><strong>Skeletal:</strong> Supports body, protects organs</li>
-<li><strong>Muscular:</strong> Moves body, maintains posture</li>
-<li><strong>Reproductive:</strong> Produces gametes and hormones</li>
-</ul>
-<button class="ar-toggle" onclick="toggleAr(this)">📖 الشرح بالعربي</button>
-<div class="ar-content">
-<strong>أجهزة الجسم:</strong> الدوري: ينقل الأكسجين والمواد | التنفسي: تبادل الغازات | الهضمي: هضم وامتصاص | البولي: إزالة النفايات | العصبي: تنسيق الأنشطة | الغدد الصماء: إفراز الهرمونات | المناعي: الحماية | الجلدي: الحماية الخارجية | الهيكلي: الدعم | العضلي: الحركة | التناسلي: التكاثر
+<!-- Chapter 5 - 8 Questions -->
+<div class="qch">
+<h3>Chapter 5: Cell Cycle & Reproduction (8 Questions)</h3>
+
+<div class="q" data-answer="B" data-explanation="طور S (طور التخليق) هو عندما يحدث تضاعف DNA. الخلية تنسخ جينومها بالكامل حتى تستقبل كل خلية ابنة مجموعة كاملة من المعلومات الوراثية. هذا هو 'S' الحاسم في الطور البيني (G₁-S-G₂) ويستغرق حوالي 6-8 ساعات في معظم الخلايا.">
+<div class="qt">9. During which phase does DNA replication occur?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) G₁ phase</div>
+<div class="opt" data-choice="B">B) S phase</div>
+<div class="opt" data-choice="C">C) G₂ phase</div>
+<div class="opt" data-choice="D">D) M phase</div>
 </div>
-</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
 </div>
 
+<div class="q" data-answer="C" data-explanation="الطور الانفصالي (Anaphase) هو عندما تنفصل الكروماتيدات الشقيقة وتتحرك إلى أقطاب متقابلة للخلية. تنقسم السنتروميرات وألياف المغزل تسحب الكروماتيدات. هذا يضمن حصول كل خلية ابنة على معلومات وراثية متطابقة. تذكر 'A' لـ 'Apart' (منفصل)!">
+<div class="qt">10. Sister chromatids separate during which phase?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Prophase</div>
+<div class="opt" data-choice="B">B) Metaphase</div>
+<div class="opt" data-choice="C">C) Anaphase</div>
+<div class="opt" data-choice="D">D) Telophase</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
 </div>
 
+<div class="q" data-answer="A" data-explanation="الفرق الأساسي: الانقسام المتساوي ينتج خليتين بينما الانقسام المنصف ينتج 4 خلايا. بالإضافة، المتساوي يحافظ على ثنائي الصبغيات (2n) بينما المنصف ينتج خلايا أحادية (n). المتساوي للنمو/الإصلاح، المنصف للتكاثر الجنسي (تكوين أمشاج).">
+<div class="qt">11. PRIMARY difference between mitosis and meiosis?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Mitosis produces 2 cells, meiosis 4 cells</div>
+<div class="opt" data-choice="B">B) Mitosis in plants, meiosis in animals</div>
+<div class="opt" data-choice="C">C) Mitosis requires energy, meiosis doesn't</div>
+<div class="opt" data-choice="D">D) Mitosis for skin, meiosis for nerves</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-        <!-- QUIZ SECTION - 30 Questions -->
-        <section class="quiz-section" id="quiz">
-            <div class="quiz-container">
-                <h1 class="section-title" style="color:white">🎯 Interactive Practice Quiz - 30 Questions</h1>
-                <p style="text-align:center;font-size:clamp(1em,3vw,1.2em);margin-bottom:40px;opacity:0.9">
-                    Click your answer - <span style="color:#10b981;font-weight:700">GREEN</span> = Correct | <span style="color:#ef4444;font-weight:700">RED</span> = Wrong
-                </p>
+<div class="q" data-answer="B" data-explanation="العبور الجيني (إعادة التركيب الوراثي) يحدث خلال الطور التمهيدي الأول من الانقسام المنصف عندما تتزاوج الكروموسومات المتماثلة وتتبادل قطع DNA. هذا يخلق تنوعاً وراثياً - كل مشيج فريد وراثياً! هذا لا يحدث أبداً في الانقسام المتساوي.">
+<div class="qt">12. Crossing over creates genetic variation during:</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Prophase of mitosis</div>
+<div class="opt" data-choice="B">B) Prophase I of meiosis</div>
+<div class="opt" data-choice="C">C) Metaphase II of meiosis</div>
+<div class="opt" data-choice="D">D) Anaphase of mitosis</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                <!-- Chapter 4 - 8 Questions -->
-                <div class="quiz-chapter">
-                    <h3>Chapter 4: Cell Membrane & Transport (8 Questions)</h3>
-                    
-                    <div class="question" data-answer="B" data-explanation="الكوليسترول مدمج في الغشاء الخلوي ويوفر الدعم الهيكلي وينظم مرونة الغشاء. يمنع السلاسل الدهنية من الالتصاق في درجات الحرارة الباردة ويمنع الحركة الزائدة في الحرارة العالية، مما يحافظ على ثبات واستقرار الغشاء.">
-                        <div class="question-text">1. Which component provides structural support and regulates membrane fluidity?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Phospholipids</div>
-                            <div class="option" data-choice="B">B) Cholesterol</div>
-                            <div class="option" data-choice="C">C) Channel proteins</div>
-                            <div class="option" data-choice="D">D) Glycoproteins</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="B" data-explanation="الخلايا السرطانية لديها انقسام خلوي غير منضبط - فقدت التنظيم الطبيعي! الخصائص الأخرى تشمل: نقص التمايز، نوى غير طبيعية، القدرة على الانتشار (metastasis)، وتشكيل أورام. الانقسام المنضبط هو ما تفعله الخلايا الطبيعية الصحيحة.">
+<div class="qt">13. Cancer cells are characterized by all EXCEPT:</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Lack of differentiation</div>
+<div class="opt" data-choice="B">B) Controlled cell division</div>
+<div class="opt" data-choice="C">C) Abnormal nuclei</div>
+<div class="opt" data-choice="D">D) Ability to metastasize</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="B" data-explanation="مضخة الصوديوم-البوتاسيوم هي آلية نقل نشط حيوية تضخ 3 أيونات صوديوم للخارج و 2 أيونات بوتاسيوم للداخل لكل جزيء ATP. هذا يحافظ على تدرجات التركيز الأساسية لوظائف الأعصاب والعضلات وتستهلك حوالي 30٪ من طاقة الخلية!">
-                        <div class="question-text">2. How many ions does the sodium-potassium pump move per cycle?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) 2 Na⁺ out, 3 K⁺ in</div>
-                            <div class="option" data-choice="B">B) 3 Na⁺ out, 2 K⁺ in</div>
-                            <div class="option" data-choice="C">C) 3 Na⁺ out, 3 K⁺ in</div>
-                            <div class="option" data-choice="D">D) 2 Na⁺ out, 2 K⁺ in</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="C" data-explanation="الطور البيني يأخذ حوالي 90٪ من دورة الخلية ويشمل G₁ (نمو)، S (تخليق DNA)، G₂ (تحضير للانقسام). طور M (الانقسام + السيتوبلازمي) فقط حوالي 10٪ من الدورة. الخلية تقضي معظم حياتها في الطور البيني بدون انقسام!">
+<div class="qt">14. What percentage of the cell cycle is Interphase?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) 50%</div>
+<div class="opt" data-choice="B">B) 70%</div>
+<div class="opt" data-choice="C">C) 90%</div>
+<div class="opt" data-choice="D">D) 10%</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="B" data-explanation="المحلول ناقص التوتر يحتوي على تركيز أقل من المذاب (ماء أكثر) مقارنة بالخلية. الماء يتحرك إلى داخل الخلية بالأسموزية مما يسبب انتفاخها. تذكر: HYPO يعني أقل/تحت - أقل مذاب، لذا الماء يدخل للخلية!">
-                        <div class="question-text">3. A cell placed in solution begins to swell. The solution is:</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Hypertonic</div>
-                            <div class="option" data-choice="B">B) Hypotonic</div>
-                            <div class="option" data-choice="C">C) Isotonic</div>
-                            <div class="option" data-choice="D">D) Amphipathic</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="A" data-explanation="نقطة تفتيش G₁ هي الأهم لأنها تحدد ما إذا كانت الخلية ستلتزم بالانقسام أو تدخل G₀ (حالة راحة). تفحص حجم الخلية الكافي، المغذيات، عوامل النمو، وأضرار DNA. إذا لم تكن الظروف صحيحة، يتوقف الانقسام هنا ولا يستمر!">
+<div class="qt">15. Which checkpoint is most critical for cell cycle control?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) G₁ checkpoint</div>
+<div class="opt" data-choice="B">B) G₂ checkpoint</div>
+<div class="opt" data-choice="C">C) M checkpoint</div>
+<div class="opt" data-choice="D">D) S checkpoint</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="C" data-explanation="الابتلاع بوساطة المستقبلات هو الأكثر تحديداً لأن المواد يجب أن ترتبط ببروتينات مستقبلة محددة على سطح الخلية قبل أن تبتلعها الخلية. هذا يسمح للخلايا بامتصاص كميات كبيرة من مواد معينة مثل كوليسترول LDL بشكل انتقائي وفعال.">
-                        <div class="question-text">4. Which endocytosis type is MOST specific?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Phagocytosis</div>
-                            <div class="option" data-choice="B">B) Pinocytosis</div>
-                            <div class="option" data-choice="C">C) Receptor-mediated endocytosis</div>
-                            <div class="option" data-choice="D">D) Exocytosis</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="D" data-explanation="الانقسام المنصف يقلل عدد الكروموسومات من ثنائي الصبغيات (2n) إلى أحادي (n). يفعل هذا من خلال انقسامين متتاليين: الانقسام المنصف الأول يفصل الكروموسومات المتماثلة (التقليل)، والانقسام المنصف الثاني يفصل الكروماتيدات الشقيقة. النتيجة: 4 أمشاج أحادية فريدة.">
+<div class="qt">16. How does meiosis reduce chromosome number?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) By destroying half the chromosomes</div>
+<div class="opt" data-choice="B">B) Through one division only</div>
+<div class="opt" data-choice="C">C) By skipping DNA replication</div>
+<div class="opt" data-choice="D">D) Through two consecutive divisions</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+</div>
 
-                    <div class="question" data-answer="C" data-explanation="الانتشار الميسر يستخدم قنوات بروتينية أو ناقلات لمساعدة الجزيئات على عبور الغشاء. لا يزال سلبياً (بدون ATP) ويتحرك مع تدرج التركيز، لكن الجزيئات القطبية الكبيرة مثل الجلوكوز تحتاج هذه البروتينات لأنها لا تستطيع المرور مباشرة عبر الطبقة الدهنية.">
-                        <div class="question-text">5. Facilitated diffusion differs from simple diffusion because it:</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Requires ATP energy</div>
-                            <div class="option" data-choice="B">B) Moves against concentration gradient</div>
-                            <div class="option" data-choice="C">C) Uses protein channels</div>
-                            <div class="option" data-choice="D">D) Only transports water</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<!-- Chapter 6 - 7 Questions -->
+<div class="qch">
+<h3>Chapter 6: Genetics & Heredity (7 Questions)</h3>
 
-                    <div class="question" data-answer="A" data-explanation="البلعمة تعني 'الأكل الخلوي' - الخلية تمد أقدام كاذبة لتحيط وتبتلع جسيمات صلبة كبيرة مثل البكتيريا. هذه هي الطريقة التي تدمر بها كريات الدم البيضاء مسببات الأمراض! تشكل فجوة كبيرة تندمج مع الليزوزومات للهضم والقضاء على العدوى.">
-                        <div class="question-text">6. Which process do white blood cells use to engulf bacteria?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Phagocytosis</div>
-                            <div class="option" data-choice="B">B) Pinocytosis</div>
-                            <div class="option" data-choice="C">C) Osmosis</div>
-                            <div class="option" data-choice="D">D) Facilitated diffusion</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="B" data-explanation="عندما يكون كلا الوالدين غير متماثل (Tt)، مربع بانيت يظهر: TT (25٪)، Tt (50٪)، tt (25٪). لذا احتمال نسل متماثل متنحي (tt) هو 25٪ أو 1/4. هذا يتبع نسبة مندل 3:1 في النمط الظاهري (3 طويل : 1 قصير).">
+<div class="qt">17. If both parents are Tt, probability of tt offspring?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) 0%</div>
+<div class="opt" data-choice="B">B) 25%</div>
+<div class="opt" data-choice="C">C) 50%</div>
+<div class="opt" data-choice="D">D) 75%</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="D" data-explanation="بروتينات الوصل تربط الخلايا المجاورة وتسمح بالتواصل بينها. الأنواع تشمل: الوصلات الفجوية (تسمح بمرور جزيئات صغيرة)، الوصلات الضيقة (تختم الخلايا معاً)، والديسموسومات (توفر تثبيتاً قوياً). هذه حاسمة لسلامة الأنسجة والوظيفة المنسقة.">
-                        <div class="question-text">7. Which protein function allows cells to communicate?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Channel proteins</div>
-                            <div class="option" data-choice="B">B) Transport proteins</div>
-                            <div class="option" data-choice="C">C) Receptor proteins</div>
-                            <div class="option" data-choice="D">D) Junction proteins</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="C" data-explanation="التهجين ثنائي الصفات (TtGg × TtGg) لصفتين مستقلتين ينتج نسبة نمط ظاهري 9:3:3:1. هذا يعني: 9 يظهرون كلتا الصفتين السائدتين، 3 الأولى سائدة + الثانية متنحية، 3 الأولى متنحية + الثانية سائدة، 1 كلاهما متنحي. هذا يوضح قانون مندل للفصل المستقل!">
+<div class="qt">18. Dihybrid cross TtGg × TtGg phenotype ratio?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) 3:1</div>
+<div class="opt" data-choice="B">B) 1:2:1</div>
+<div class="opt" data-choice="C">C) 9:3:3:1</div>
+<div class="opt" data-choice="D">D) 1:1:1:1</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="A" data-explanation="النقل النشط يحتاج طاقة ATP لأنه يحرك المواد ضد تدرج التركيز (من منخفض إلى عالي). هذا مثل دفع كرة إلى أعلى التل - يتطلب مدخل طاقة. مضخة الصوديوم-البوتاسيوم تستهلك حوالي 30٪ من ATP الخلية، مما يدل على أهميتها الكبيرة!">
-                        <div class="question-text">8. Why does active transport require ATP?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Moves substances against concentration gradient</div>
-                            <div class="option" data-choice="B">B) Moves large molecules</div>
-                            <div class="option" data-choice="C">C) Changes membrane shape</div>
-                            <div class="option" data-choice="D">D) Creates protein channels</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-                </div>
+<div class="q" data-answer="B" data-explanation="قانون مندل للفصل المستقل ينص على أن كل زوج من الأليلات ينفصل بشكل مستقل خلال تكوين الأمشاج. هذا يعني أن وراثة صفة واحدة لا تؤثر على وراثة صفة أخرى. الأساس الفيزيائي هو التوجه العشوائي لأزواج الكروموسومات خلال الانقسام المنصف الأول.">
+<div class="qt">19. Law of Independent Assortment means:</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Alleles segregate together</div>
+<div class="opt" data-choice="B">B) Each allele pair segregates independently</div>
+<div class="opt" data-choice="C">C) Dominant masks recessive</div>
+<div class="opt" data-choice="D">D) Genes are on chromosomes</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                <!-- Chapter 5 - 8 Questions -->
-                <div class="quiz-chapter">
-                    <h3>Chapter 5: Cell Cycle & Reproduction (8 Questions)</h3>
-                    
-                    <div class="question" data-answer="B" data-explanation="طور S (طور التخليق) هو عندما يحدث تضاعف DNA. الخلية تنسخ جينومها بالكامل حتى تستقبل كل خلية ابنة مجموعة كاملة من المعلومات الوراثية. هذا هو 'S' الحاسم في الطور البيني (G₁-S-G₂) ويستغرق حوالي 6-8 ساعات في معظم الخلايا.">
-                        <div class="question-text">9. During which phase does DNA replication occur?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) G₁ phase</div>
-                            <div class="option" data-choice="B">B) S phase</div>
-                            <div class="option" data-choice="C">C) G₂ phase</div>
-                            <div class="option" data-choice="D">D) M phase</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="B" data-explanation="الاضطرابات المرتبطة بالجنس أكثر شيوعاً في الذكور لأن الذكور لديهم كروموسوم X واحد فقط (XY). إذا كان يحمل الأليل الطافر، يظهر الاضطراب مباشرة - لا يوجد X ثاني للتعويض! الإناث لديهن كروموسومي X (XX)، لذا يمكن أن يكن حاملات إذا كان أحد X طبيعياً.">
+<div class="qt">20. Why are sex-linked disorders more common in males?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Males have two X chromosomes</div>
+<div class="opt" data-choice="B">B) Males only need one mutant X allele</div>
+<div class="opt" data-choice="C">C) Males cannot be carriers</div>
+<div class="opt" data-choice="D">D) Y chromosome carries disease</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="C" data-explanation="الطور الانفصالي (Anaphase) هو عندما تنفصل الكروماتيدات الشقيقة وتتحرك إلى أقطاب متقابلة للخلية. تنقسم السنتروميرات وألياف المغزل تسحب الكروماتيدات. هذا يضمن حصول كل خلية ابنة على معلومات وراثية متطابقة. تذكر 'A' لـ 'Apart' (منفصل)!">
-                        <div class="question-text">10. Sister chromatids separate during which phase?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Prophase</div>
-                            <div class="option" data-choice="B">B) Metaphase</div>
-                            <div class="option" data-choice="C">C) Anaphase</div>
-                            <div class="option" data-choice="D">D) Telophase</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="C" data-explanation="في السيادة غير الكاملة، لا أحد من الأليلين سائد تماماً. عندما يتهجن RR (أحمر) مع WW (أبيض)، جميع النسل RW يظهرون نمطاً ظاهرياً وسطياً - وردي! نسبة النمط الجيني (1:2:1) تطابق نسبة النمط الظاهري. هذا يختلف عن السيادة الكاملة حيث المتغايرات تبدو مثل الأب السائد.">
+<div class="qt">21. In incomplete dominance, RR × WW produces:</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) All red flowers</div>
+<div class="opt" data-choice="B">B) All white flowers</div>
+<div class="opt" data-choice="C">C) All pink flowers</div>
+<div class="opt" data-choice="D">D) 50% red, 50% white</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="A" data-explanation="الفرق الأساسي: الانقسام المتساوي ينتج خليتين بينما الانقسام المنصف ينتج 4 خلايا. بالإضافة، المتساوي يحافظ على ثنائي الصبغيات (2n) بينما المنصف ينتج خلايا أحادية (n). المتساوي للنمو/الإصلاح، المنصف للتكاثر الجنسي (تكوين أمشاج).">
-                        <div class="question-text">11. PRIMARY difference between mitosis and meiosis?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Mitosis produces 2 cells, meiosis 4 cells</div>
-                            <div class="option" data-choice="B">B) Mitosis in plants, meiosis in animals</div>
-                            <div class="option" data-choice="C">C) Mitosis requires energy, meiosis doesn't</div>
-                            <div class="option" data-choice="D">D) Mitosis for skin, meiosis for nerves</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="B" data-explanation="التهجين الاختباري يهجن فرداً بنمط ظاهري سائد (نمط جيني غير معروف: TT أو Tt؟) مع متماثل متنحي (tt). النتائج تكشف النمط الجيني المجهول: إذا كان النسل 1:1 (طويل:قصير)، الأب كان Tt. إذا كان كل النسل طويلاً، الأب كان TT. هذه الطريقة الوحيدة لتحديد النمط الجيني!">
+<div class="qt">22. A testcross is used to determine:</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Phenotype of offspring</div>
+<div class="opt" data-choice="B">B) If dominant phenotype is TT or Tt</div>
+<div class="opt" data-choice="C">C) Number of chromosomes</div>
+<div class="opt" data-choice="D">D) Sex of offspring</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="B" data-explanation="العبور الجيني (إعادة التركيب الوراثي) يحدث خلال الطور التمهيدي الأول من الانقسام المنصف عندما تتزاوج الكروموسومات المتماثلة وتتبادل قطع DNA. هذا يخلق تنوعاً وراثياً - كل مشيج فريد وراثياً! هذا لا يحدث أبداً في الانقسام المتساوي.">
-                        <div class="question-text">12. Crossing over creates genetic variation during:</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Prophase of mitosis</div>
-                            <div class="option" data-choice="B">B) Prophase I of meiosis</div>
-                            <div class="option" data-choice="C">C) Metaphase II of meiosis</div>
-                            <div class="option" data-choice="D">D) Anaphase of mitosis</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="A" data-explanation="البشر لديهم 23 زوجاً = 46 كروموسوماً إجمالياً. من هذه، 22 زوجاً جسمية (autosomes تتحكم في معظم الصفات) و1 زوج كروموسومات جنسية (XX للأنثى، XY للذكر). كل والد يساهم بـ 23 كروموسوماً (n) لتشكيل نسل ثنائي الصبغيات (2n = 46).">
+<div class="qt">23. How many chromosome pairs do humans have?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) 23 pairs</div>
+<div class="opt" data-choice="B">B) 46 pairs</div>
+<div class="opt" data-choice="C">C) 22 pairs</div>
+<div class="opt" data-choice="D">D) 24 pairs</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+</div>
 
-                    <div class="question" data-answer="B" data-explanation="الخلايا السرطانية لديها انقسام خلوي غير منضبط - فقدت التنظيم الطبيعي! الخصائص الأخرى تشمل: نقص التمايز، نوى غير طبيعية، القدرة على الانتشار (metastasis)، وتشكيل أورام. الانقسام المنضبط هو ما تفعله الخلايا الطبيعية الصحيحة.">
-                        <div class="question-text">13. Cancer cells are characterized by all EXCEPT:</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Lack of differentiation</div>
-                            <div class="option" data-choice="B">B) Controlled cell division</div>
-                            <div class="option" data-choice="C">C) Abnormal nuclei</div>
-                            <div class="option" data-choice="D">D) Ability to metastasize</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<!-- Chapter 7 - 7 Questions -->
+<div class="qch">
+<h3>Chapter 7: Animal Tissues (7 Questions)</h3>
 
-                    <div class="question" data-answer="C" data-explanation="الطور البيني يأخذ حوالي 90٪ من دورة الخلية ويشمل G₁ (نمو)، S (تخليق DNA)، G₂ (تحضير للانقسام). طور M (الانقسام + السيتوبلازمي) فقط حوالي 10٪ من الدورة. الخلية تقضي معظم حياتها في الطور البيني بدون انقسام!">
-                        <div class="question-text">14. What percentage of the cell cycle is Interphase?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) 50%</div>
-                            <div class="option" data-choice="B">B) 70%</div>
-                            <div class="option" data-choice="C">C) 90%</div>
-                            <div class="option" data-choice="D">D) 10%</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="B" data-explanation="النسيج الظهاري الحرشفي البسيط موجود في الرئتين (الأسناخ) لتبادل الغازات. إنه رقيق جداً (طبقة واحدة من خلايا مسطحة) مما يسمح بانتشار فعال لـ O₂ و CO₂. موجود أيضاً في بطانة الشعيرات الدموية. 'بسيط' = طبقة واحدة، 'حرشفي' = مسطح مثل البيض المقلي.">
+<div class="qt">24. Which epithelial tissue in lungs for gas exchange?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Stratified squamous</div>
+<div class="opt" data-choice="B">B) Simple squamous</div>
+<div class="opt" data-choice="C">C) Simple columnar</div>
+<div class="opt" data-choice="D">D) Pseudostratified</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="A" data-explanation="نقطة تفتيش G₁ هي الأهم لأنها تحدد ما إذا كانت الخلية ستلتزم بالانقسام أو تدخل G₀ (حالة راحة). تفحص حجم الخلية الكافي، المغذيات، عوامل النمو، وأضرار DNA. إذا لم تكن الظروف صحيحة، يتوقف الانقسام هنا ولا يستمر!">
-                        <div class="question-text">15. Which checkpoint is most critical for cell cycle control?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) G₁ checkpoint</div>
-                            <div class="option" data-choice="B">B) G₂ checkpoint</div>
-                            <div class="option" data-choice="C">C) M checkpoint</div>
-                            <div class="option" data-choice="D">D) S checkpoint</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="C" data-explanation="النسيج الضام الليفي لديه ألياف كولاجين معبأة بكثافة مما يجعله قوياً جداً. يشكل الأوتار (تربط العضلة بالعظم) والأربطة (تربط العظم بالعظم). الترتيب الموازي للكولاجين يعطي قوة شد هائلة لتحمل قوى السحب والضغط العالية.">
+<div class="qt">25. Which connective tissue forms tendons?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Loose connective</div>
+<div class="opt" data-choice="B">B) Adipose</div>
+<div class="opt" data-choice="C">C) Fibrous connective</div>
+<div class="opt" data-choice="D">D) Cartilage</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="D" data-explanation="الانقسام المنصف يقلل عدد الكروموسومات من ثنائي الصبغيات (2n) إلى أحادي (n). يفعل هذا من خلال انقسامين متتاليين: الانقسام المنصف الأول يفصل الكروموسومات المتماثلة (التقليل)، والانقسام المنصف الثاني يفصل الكروماتيدات الشقيقة. النتيجة: 4 أمشاج أحادية فريدة.">
-                        <div class="question-text">16. How does meiosis reduce chromosome number?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) By destroying half the chromosomes</div>
-                            <div class="option" data-choice="B">B) Through one division only</div>
-                            <div class="option" data-choice="C">C) By skipping DNA replication</div>
-                            <div class="option" data-choice="D">D) Through two consecutive divisions</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-                </div>
+<div class="q" data-answer="C" data-explanation="العضلة الملساء لا إرادية (ليست تحت السيطرة الواعية) وموجودة في جدران الأعضاء الداخلية مثل الأمعاء والأوعية الدموية والمثانة. إنها غير مخططة (بدون خطوط) وتنقبض ببطء لكن يمكن أن تستمر في الانقباضات. تحرك الطعام عبر الجهاز الهضمي بالحركة الدودية (peristalsis)!">
+<div class="qt">26. Involuntary muscle in intestine walls?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Skeletal muscle</div>
+<div class="opt" data-choice="B">B) Cardiac muscle</div>
+<div class="opt" data-choice="C">C) Smooth muscle</div>
+<div class="opt" data-choice="D">D) Striated muscle</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                <!-- Chapter 6 - 7 Questions -->
-                <div class="quiz-chapter">
-                    <h3>Chapter 6: Genetics & Heredity (7 Questions)</h3>
-                    
-                    <div class="question" data-answer="B" data-explanation="عندما يكون كلا الوالدين غير متماثل (Tt)، مربع بانيت يظهر: TT (25٪)، Tt (50٪)، tt (25٪). لذا احتمال نسل متماثل متنحي (tt) هو 25٪ أو 1/4. هذا يتبع نسبة مندل 3:1 في النمط الظاهري (3 طويل : 1 قصير).">
-                        <div class="question-text">17. If both parents are Tt, probability of tt offspring?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) 0%</div>
-                            <div class="option" data-choice="B">B) 25%</div>
-                            <div class="option" data-choice="C">C) 50%</div>
-                            <div class="option" data-choice="D">D) 75%</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="C" data-explanation="الوظيفة الأساسية للنسيج العصبي هي استشعار المحفزات ونقل المعلومات بسرعة عبر النبضات الكهربائية. الخلايا العصبية (neurons) تنقل الإشارات، بينما الخلايا الداعمة (glia) تعزل وتغذي وتنظم. هذا يسمح بالتواصل السريع والتنسيق في الجسم - المخ والحبل الشوكي والأعصاب!">
+<div class="qt">27. Primary function of nervous tissue?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Provide structural support</div>
+<div class="opt" data-choice="B">B) Store energy</div>
+<div class="opt" data-choice="C">C) Sense stimuli and transmit information</div>
+<div class="opt" data-choice="D">D) Protect organs</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="C" data-explanation="التهجين ثنائي الصفات (TtGg × TtGg) لصفتين مستقلتين ينتج نسبة نمط ظاهري 9:3:3:1. هذا يعني: 9 يظهرون كلتا الصفتين السائدتين، 3 الأولى سائدة + الثانية متنحية، 3 الأولى متنحية + الثانية سائدة، 1 كلاهما متنحي. هذا يوضح قانون مندل للفصل المستقل!">
-                        <div class="question-text">18. Dihybrid cross TtGg × TtGg phenotype ratio?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) 3:1</div>
-                            <div class="option" data-choice="B">B) 1:2:1</div>
-                            <div class="option" data-choice="C">C) 9:3:3:1</div>
-                            <div class="option" data-choice="D">D) 1:1:1:1</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="D" data-explanation="الجهاز البولي (الكلى والمثانة) يزيل النفايات الأيضية مثل اليوريا، ينظم درجة حموضة الدم عن طريق التحكم في مستويات H⁺ و HCO₃⁻، ويحافظ على توازن الماء والكهارل. الكلى تصفي الدم وتنتج البول، مزيلة النفايات السامة مع الاحتفاظ بالمواد الأساسية!">
+<div class="qt">28. Which system removes wastes and regulates blood pH?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Digestive</div>
+<div class="opt" data-choice="B">B) Respiratory</div>
+<div class="opt" data-choice="C">C) Circulatory</div>
+<div class="opt" data-choice="D">D) Urinary</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="B" data-explanation="قانون مندل للفصل المستقل ينص على أن كل زوج من الأليلات ينفصل بشكل مستقل خلال تكوين الأمشاج. هذا يعني أن وراثة صفة واحدة لا تؤثر على وراثة صفة أخرى. الأساس الفيزيائي هو التوجه العشوائي لأزواج الكروموسومات خلال الانقسام المنصف الأول.">
-                        <div class="question-text">19. Law of Independent Assortment means:</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Alleles segregate together</div>
-                            <div class="option" data-choice="B">B) Each allele pair segregates independently</div>
-                            <div class="option" data-choice="C">C) Dominant masks recessive</div>
-                            <div class="option" data-choice="D">D) Genes are on chromosomes</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="B" data-explanation="النسيج الدهني (Adipose) هو نسيج ضام متخصص مكون من خلايا ممتلئة بالدهون. الوظائف: تخزين الطاقة (الشكل الأكثر كفاءة)، العزل الحراري (تنظيم الحرارة)، التوسيد (حماية الأعضاء)، وإنتاج الهرمونات (leptin). موجود تحت الجلد وحول الأعضاء الداخلية.">
+<div class="qt">29. What is the primary function of adipose tissue?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Support and protection</div>
+<div class="opt" data-choice="B">B) Fat storage and insulation</div>
+<div class="opt" data-choice="C">C) Transport substances</div>
+<div class="opt" data-choice="D">D) Produce blood cells</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
 
-                    <div class="question" data-answer="B" data-explanation="الاضطرابات المرتبطة بالجنس أكثر شيوعاً في الذكور لأن الذكور لديهم كروموسوم X واحد فقط (XY). إذا كان يحمل الأليل الطافر، يظهر الاضطراب مباشرة - لا يوجد X ثاني للتعويض! الإناث لديهن كروموسومي X (XX)، لذا يمكن أن يكن حاملات إذا كان أحد X طبيعياً.">
-                        <div class="question-text">20. Why are sex-linked disorders more common in males?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Males have two X chromosomes</div>
-                            <div class="option" data-choice="B">B) Males only need one mutant X allele</div>
-                            <div class="option" data-choice="C">C) Males cannot be carriers</div>
-                            <div class="option" data-choice="D">D) Y chromosome carries disease</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
+<div class="q" data-answer="A" data-explanation="النسيج الظهاري الحرشفي الطبقي لديه طبقات متعددة من الخلايا المسطحة، مما يوفر حماية ممتازة من الاحتكاك والإجهاد الميكانيكي. موجود في المناطق عالية التآكل: البشرة الخارجية للجلد، بطانة الفم، المريء. الطبقات المتعددة يمكن استبدالها باستمرار مع تآكل الخلايا الخارجية.">
+<div class="qt">30. Which tissue protects skin from abrasion?</div>
+<div class="opts">
+<div class="opt" data-choice="A">A) Stratified squamous epithelium</div>
+<div class="opt" data-choice="B">B) Simple squamous</div>
+<div class="opt" data-choice="C">C) Loose connective</div>
+<div class="opt" data-choice="D">D) Adipose tissue</div>
+</div>
+<button class="ebtn">💡 اعرف ليش الإجابة صح</button>
+<div class="exp"><h5>✅ الشرح:</h5><p></p></div>
+</div>
+</div>
 
-                    <div class="question" data-answer="C" data-explanation="في السيادة غير الكاملة، لا أحد من الأليلين سائد تماماً. عندما يتهجن RR (أحمر) مع WW (أبيض)، جميع النسل RW يظهرون نمطاً ظاهرياً وسطياً - وردي! نسبة النمط الجيني (1:2:1) تطابق نسبة النمط الظاهري. هذا يختلف عن السيادة الكاملة حيث المتغايرات تبدو مثل الأب السائد.">
-                        <div class="question-text">21. In incomplete dominance, RR × WW produces:</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) All red flowers</div>
-                            <div class="option" data-choice="B">B) All white flowers</div>
-                            <div class="option" data-choice="C">C) All pink flowers</div>
-                            <div class="option" data-choice="D">D) 50% red, 50% white</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="B" data-explanation="التهجين الاختباري يهجن فرداً بنمط ظاهري سائد (نمط جيني غير معروف: TT أو Tt؟) مع متماثل متنحي (tt). النتائج تكشف النمط الجيني المجهول: إذا كان النسل 1:1 (طويل:قصير)، الأب كان Tt. إذا كان كل النسل طويلاً، الأب كان TT. هذه الطريقة الوحيدة لتحديد النمط الجيني!">
-                        <div class="question-text">22. A testcross is used to determine:</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Phenotype of offspring</div>
-                            <div class="option" data-choice="B">B) If dominant phenotype is TT or Tt</div>
-                            <div class="option" data-choice="C">C) Number of chromosomes</div>
-                            <div class="option" data-choice="D">D) Sex of offspring</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="A" data-explanation="البشر لديهم 23 زوجاً = 46 كروموسوماً إجمالياً. من هذه، 22 زوجاً جسمية (autosomes تتحكم في معظم الصفات) و1 زوج كروموسومات جنسية (XX للأنثى، XY للذكر). كل والد يساهم بـ 23 كروموسوماً (n) لتشكيل نسل ثنائي الصبغيات (2n = 46).">
-                        <div class="question-text">23. How many chromosome pairs do humans have?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) 23 pairs</div>
-                            <div class="option" data-choice="B">B) 46 pairs</div>
-                            <div class="option" data-choice="C">C) 22 pairs</div>
-                            <div class="option" data-choice="D">D) 24 pairs</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-                </div>
-
-                <!-- Chapter 7 - 7 Questions -->
-                <div class="quiz-chapter">
-                    <h3>Chapter 7: Animal Tissues (7 Questions)</h3>
-                    
-                    <div class="question" data-answer="B" data-explanation="النسيج الظهاري الحرشفي البسيط موجود في الرئتين (الأسناخ) لتبادل الغازات. إنه رقيق جداً (طبقة واحدة من خلايا مسطحة) مما يسمح بانتشار فعال لـ O₂ و CO₂. موجود أيضاً في بطانة الشعيرات الدموية. 'بسيط' = طبقة واحدة، 'حرشفي' = مسطح مثل البيض المقلي.">
-                        <div class="question-text">24. Which epithelial tissue in lungs for gas exchange?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Stratified squamous</div>
-                            <div class="option" data-choice="B">B) Simple squamous</div>
-                            <div class="option" data-choice="C">C) Simple columnar</div>
-                            <div class="option" data-choice="D">D) Pseudostratified</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="C" data-explanation="النسيج الضام الليفي لديه ألياف كولاجين معبأة بكثافة مما يجعله قوياً جداً. يشكل الأوتار (تربط العضلة بالعظم) والأربطة (تربط العظم بالعظم). الترتيب الموازي للكولاجين يعطي قوة شد هائلة لتحمل قوى السحب والضغط العالية.">
-                        <div class="question-text">25. Which connective tissue forms tendons?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Loose connective</div>
-                            <div class="option" data-choice="B">B) Adipose</div>
-                            <div class="option" data-choice="C">C) Fibrous connective</div>
-                            <div class="option" data-choice="D">D) Cartilage</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="C" data-explanation="العضلة الملساء لا إرادية (ليست تحت السيطرة الواعية) وموجودة في جدران الأعضاء الداخلية مثل الأمعاء والأوعية الدموية والمثانة. إنها غير مخططة (بدون خطوط) وتنقبض ببطء لكن يمكن أن تستمر في الانقباضات. تحرك الطعام عبر الجهاز الهضمي بالحركة الدودية (peristalsis)!">
-                        <div class="question-text">26. Involuntary muscle in intestine walls?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Skeletal muscle</div>
-                            <div class="option" data-choice="B">B) Cardiac muscle</div>
-                            <div class="option" data-choice="C">C) Smooth muscle</div>
-                            <div class="option" data-choice="D">D) Striated muscle</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="C" data-explanation="الوظيفة الأساسية للنسيج العصبي هي استشعار المحفزات ونقل المعلومات بسرعة عبر النبضات الكهربائية. الخلايا العصبية (neurons) تنقل الإشارات، بينما الخلايا الداعمة (glia) تعزل وتغذي وتنظم. هذا يسمح بالتواصل السريع والتنسيق في الجسم - المخ والحبل الشوكي والأعصاب!">
-                        <div class="question-text">27. Primary function of nervous tissue?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Provide structural support</div>
-                            <div class="option" data-choice="B">B) Store energy</div>
-                            <div class="option" data-choice="C">C) Sense stimuli and transmit information</div>
-                            <div class="option" data-choice="D">D) Protect organs</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="D" data-explanation="الجهاز البولي (الكلى والمثانة) يزيل النفايات الأيضية مثل اليوريا، ينظم درجة حموضة الدم عن طريق التحكم في مستويات H⁺ و HCO₃⁻، ويحافظ على توازن الماء والكهارل. الكلى تصفي الدم وتنتج البول، مزيلة النفايات السامة مع الاحتفاظ بالمواد الأساسية!">
-                        <div class="question-text">28. Which system removes wastes and regulates blood pH?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Digestive</div>
-                            <div class="option" data-choice="B">B) Respiratory</div>
-                            <div class="option" data-choice="C">C) Circulatory</div>
-                            <div class="option" data-choice="D">D) Urinary</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="B" data-explanation="النسيج الدهني (Adipose) هو نسيج ضام متخصص مكون من خلايا ممتلئة بالدهون. الوظائف: تخزين الطاقة (الشكل الأكثر كفاءة)، العزل الحراري (تنظيم الحرارة)، التوسيد (حماية الأعضاء)، وإنتاج الهرمونات (leptin). موجود تحت الجلد وحول الأعضاء الداخلية.">
-                        <div class="question-text">29. What is the primary function of adipose tissue?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Support and protection</div>
-                            <div class="option" data-choice="B">B) Fat storage and insulation</div>
-                            <div class="option" data-choice="C">C) Transport substances</div>
-                            <div class="option" data-choice="D">D) Produce blood cells</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-
-                    <div class="question" data-answer="A" data-explanation="النسيج الظهاري الحرشفي الطبقي لديه طبقات متعددة من الخلايا المسطحة، مما يوفر حماية ممتازة من الاحتكاك والإجهاد الميكانيكي. موجود في المناطق عالية التآكل: البشرة الخارجية للجلد، بطانة الفم، المريء. الطبقات المتعددة يمكن استبدالها باستمرار مع تآكل الخلايا الخارجية.">
-                        <div class="question-text">30. Which tissue protects skin from abrasion?</div>
-                        <div class="options">
-                            <div class="option" data-choice="A">A) Stratified squamous epithelium</div>
-                            <div class="option" data-choice="B">B) Simple squamous</div>
-                            <div class="option" data-choice="C">C) Loose connective</div>
-                            <div class="option" data-choice="D">D) Adipose tissue</div>
-                        </div>
-                        <button class="explain-btn">💡 اعرف ليش الإجابة صح</button>
-                        <div class="explanation"><h5>✅ الشرح:</h5><p></p></div>
-                    </div>
-                </div></div>
-
+<!-- Quiz Controls -->
 <div class="qctrl">
 <button class="qbtn" id="showScore">📊 اعرض درجتي</button>
 <button class="qbtn reset" id="resetQuiz">🔄 إعادة الاختبار</button>
 </div>
 
-<div class="score" id="scoreBox">
-<h3>درجتك: <span id="scoreVal">0</span>/<span id="totalQ">2</span></h3>
-<p id="scoreMsg"></p>
+<div class="score" id="scoreDisplay">
+<h3>درجتك: <span id="scoreValue">0</span>/30</h3>
+<p id="scoreMessage"></p>
 </div>
 
 </div>
@@ -961,63 +929,69 @@ nav a{padding:10px 18px;font-size:0.88em}
 <button id="topBtn">↑</button>
 
 <script>
-// Toggle Arabic explanation
-function toggleAr(btn) {
-    const content = btn.nextElementSibling;
-    content.classList.toggle('show');
-    btn.classList.toggle('active');
-    btn.textContent = content.classList.contains('show') ? '🔼 إخفاء الشرح' : '📖 الشرح بالعربي';
+// ===== Navigation & Content =====
+function toggleAr(btn){
+const content=btn.nextElementSibling;
+content.classList.toggle('show');
+btn.classList.toggle('active');
+btn.textContent=content.classList.contains('show')?'🔼 إخفاء الشرح':'📖 الشرح بالعربي';
 }
 
-// Scroll to top
-window.addEventListener('scroll', () => {
-    document.getElementById('topBtn').classList.toggle('show', window.pageYOffset > 300);
+window.addEventListener('scroll',()=>{
+document.getElementById('topBtn').classList.toggle('show',window.pageYOffset>300);
 });
-document.getElementById('topBtn').onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+document.getElementById('topBtn').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 
-// Smooth scroll for nav links
-document.querySelectorAll('nav a').forEach(a => a.onclick = e => {
-    e.preventDefault();
-    document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+document.querySelectorAll('nav a').forEach(a=>a.onclick=e=>{
+e.preventDefault();
+document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
 });
 
-// Quiz functionality
-let answered = 0, correct = 0;
-const total = document.querySelectorAll('.q').length;
-document.getElementById('totalQ').textContent = total;
+// ===== Quiz System =====
+let answered=0,correct=0;
+const total=30;
 
-document.querySelectorAll('.q').forEach(q => {
-    const ans = q.dataset.answer, exp = q.dataset.explanation;
-    const opts = q.querySelectorAll('.opt'), btn = q.querySelector('.ebtn'), expDiv = q.querySelector('.exp');
-    expDiv.querySelector('p').textContent = exp;
-    
-    opts.forEach(o => o.onclick = function() {
-        if(this.classList.contains('disabled')) return;
-        opts.forEach(x => x.classList.add('disabled'));
-        const choice = this.dataset.choice;
-        if(choice === ans) { this.classList.add('correct'); correct++; }
-        else { this.classList.add('wrong'); opts.forEach(x => { if(x.dataset.choice === ans) x.classList.add('correct'); }); }
-        btn.classList.add('show');
-        answered++;
-    });
-    
-    btn.onclick = () => {
-        expDiv.classList.toggle('show');
-        btn.textContent = expDiv.classList.contains('show') ? '🔼 إخفاء الشرح' : '💡 اعرف ليش الإجابة صح';
-    };
+document.querySelectorAll('.q').forEach(q=>{
+const ans=q.dataset.answer,explanation=q.dataset.explanation;
+const opts=q.querySelectorAll('.opt'),btn=q.querySelector('.ebtn'),expDiv=q.querySelector('.exp');
+expDiv.querySelector('p').textContent=explanation;
+
+opts.forEach(o=>o.onclick=function(){
+if(this.classList.contains('disabled'))return;
+opts.forEach(x=>x.classList.add('disabled'));
+const choice=this.dataset.choice;
+if(choice===ans){
+this.classList.add('correct');
+correct++;
+}else{
+this.classList.add('wrong');
+opts.forEach(x=>{if(x.dataset.choice===ans)x.classList.add('correct')});
+}
+btn.classList.add('show');
+answered++;
 });
 
-document.getElementById('showScore').onclick = () => {
-    if(answered === 0) { alert('أجب على الأسئلة أولاً!'); return; }
-    const box = document.getElementById('scoreBox'), val = document.getElementById('scoreVal'), msg = document.getElementById('scoreMsg');
-    const pct = (correct/total)*100;
-    val.textContent = correct;
-    msg.textContent = pct === 100 ? '🎉 ممتاز! درجة كاملة!' : pct >= 90 ? '🌟 ممتاز جداً!' : pct >= 80 ? '👍 جيد جداً!' : pct >= 70 ? '✅ جيد!' : pct >= 60 ? '📚 مقبول!' : '⚠️ راجع المادة!';
-    box.classList.add('show');
-    box.scrollIntoView({behavior:'smooth'});
+btn.onclick=()=>{
+expDiv.classList.toggle('show');
+btn.textContent=expDiv.classList.contains('show')?'🔼 إخفاء الشرح':'💡 اعرف ليش الإجابة صح';
+};
+});
+
+document.getElementById('showScore').onclick=()=>{
+if(answered===0){alert('الرجاء الإجابة على الأسئلة أولاً!');return;}
+const display=document.getElementById('scoreDisplay'),value=document.getElementById('scoreValue'),msg=document.getElementById('scoreMessage');
+const pct=(correct/total)*100;
+value.textContent=correct;
+msg.textContent=pct===100?'🎉 ممتاز! درجة كاملة! أنت محترف!':pct>=90?'🌟 ممتاز جداً! فهم قوي للمادة!':pct>=80?'👍 جيد جداً! أداء ممتاز!':pct>=70?'✅ جيد! راجع المواضيع التي أخطأت فيها!':pct>=60?'📚 مقبول! تحتاج مزيد من المذاكرة!':'⚠️ راجع المادة بتركيز أكبر!';
+display.classList.add('show');
+display.scrollIntoView({behavior:'smooth',block:'center'});
 };
 
-document.getElementById('resetQuiz').onclick = () => { if(confirm('إعادة الاختبار؟')) location.reload(); };
+document.getElementById('resetQuiz').onclick=()=>{
+if(confirm('هل تريد إعادة الاختبار؟ سيتم حذف جميع إجاباتك.')){
+location.reload();
+}
+};
 </script>
 </body>
 </html>
